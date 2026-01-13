@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import TestimonialCarousel from "./components/TestimonialCarousel";
 import ServicesCarousel from "./components/ServicesCarousel";
@@ -18,7 +19,7 @@ import {
   Shield,
 } from "lucide-react";
 
-function App() {
+function Home() {
   useEffect(() => {
     // Detect and apply system theme preference
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -49,9 +50,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
-      <WhatsAppButton />
-
       {/* Hero Section */}
       <section
         id="home"
@@ -424,7 +422,22 @@ function App() {
   );
 }
 
-export default App;
+import CleaningPage from "./pages/Services/Cleaning";
+import WashingBayPage from "./pages/Services/WashingBay";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <WhatsAppButton />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services/cleaning" element={<CleaningPage />} />
+        <Route path="/services/washing-bay" element={<WashingBayPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 // --- ContactForm component -----------------------------------------------------------------
 function ContactForm() {

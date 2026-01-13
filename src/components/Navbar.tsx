@@ -1,54 +1,101 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+
+// Utility function to merge class names
+const cn = (...classes: Array<string | false | null | undefined>) =>
+  classes.filter(Boolean).join(" ");
+
+const services = [
+  { id: "cleaning", label: "Cleaning Services", path: "/services/cleaning" },
+  { id: "washing-bay", label: "Washing Bay", path: "/services/washing-bay" },
+  { id: "laundry", label: "Laundry Services", path: "/services/laundry" },
+  {
+    id: "engineering",
+    label: "Engineering Solutions",
+    path: "/services/engineering",
+  },
+  { id: "trading", label: "Trading Services", path: "/services/trading" },
+  {
+    id: "ice-cream",
+    label: "Ice Cream Manufacturing",
+    path: "/services/ice-cream",
+  },
+];
+let dropdownTimeout: ReturnType<typeof setTimeout>;
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Theme and scroll effects
   useEffect(() => {
-    // Detect system theme preference
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDark(mediaQuery.matches);
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setIsDark(mq.matches);
 
-    const handleThemeChange = (e: MediaQueryListEvent) => {
+    const handleTheme = (e: MediaQueryListEvent) => {
       setIsDark(e.matches);
-      if (e.matches) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      document.documentElement.classList.toggle("dark", e.matches);
     };
 
-    // Set initial theme
-    if (mediaQuery.matches) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", mq.matches);
+    mq.addEventListener("change", handleTheme);
 
-    mediaQuery.addEventListener("change", handleThemeChange);
-
-    // Handle scroll
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      mediaQuery.removeEventListener("change", handleThemeChange);
+      mq.removeEventListener("change", handleTheme);
     };
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Smooth scroll function
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
       setIsMobileMenuOpen(false);
+      return;
     }
+
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        setIsMobileMenuOpen(false);
+      }, 150);
+    } else {
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        setIsMobileMenuOpen(false);
+      }, 150);
+    }
+  };
+
+  // Desktop dropdown hover handlers
+  const handleMouseEnter = () => {
+    clearTimeout(dropdownTimeout);
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    dropdownTimeout = setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 1500); // 1.5s delay
   };
 
   return (
@@ -72,112 +119,141 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <button
-              onClick={() => scrollToSection("home")}
-              className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
-            >
-              AIU
-            </button>
-          </div>
+          <button
+            onClick={() => scrollTo("home")}
+            className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
+          >
+            AIU
+          </button>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             <button
-              onClick={() => scrollToSection("home")}
+              onClick={() => scrollTo("home")}
               className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               Home
             </button>
-            <button
-              onClick={() => scrollToSection("services")}
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+
+            {/* Services Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
-              Services
-            </button>
+              <button className="flex items-center gap-1 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
+                Services
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute bg-background shadow-lg border border-border rounded-md mt-2 w-64">
+                  <div className="flex flex-col py-2">
+                    {services.map(({ id, label, path }) => (
+                      <a
+                        key={id}
+                        href={path}
+                        className="block px-4 py-2 text-left hover:bg-accent/40"
+                      >
+                        {label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
-              onClick={() => scrollToSection("about")}
+              onClick={() => scrollTo("about")}
               className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               About
             </button>
             <button
-              onClick={() => scrollToSection("testimonials")}
+              onClick={() => scrollTo("testimonials")}
               className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               Testimonials
             </button>
             <button
-              onClick={() => scrollToSection("contact")}
+              onClick={() => scrollTo("contact")}
               className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
             >
               Contact
             </button>
-            <Button onClick={() => scrollToSection("contact")} className="ml-4">
+            <Button onClick={() => scrollTo("contact")} className="ml-4">
               Get Quote
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-foreground hover:bg-accent transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 rounded-md text-foreground hover:bg-accent transition-colors"
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div
-            className="md:hidden py-4 space-y-4 border-t border-border/40"
-            style={{
-              backdropFilter: "blur(12px) saturate(180%)",
-              WebkitBackdropFilter: "blur(12px) saturate(180%)",
-            }}
-          >
+          <div className="md:hidden py-4 space-y-4 border-t border-border/40">
             <button
-              onClick={() => scrollToSection("home")}
-              className="block w-full text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-accent/50 rounded-md transition-colors"
+              onClick={() => scrollTo("home")}
+              className="block w-full text-left px-4 py-2 text-sm font-medium hover:bg-accent/40 rounded-md"
             >
               Home
             </button>
+
+            <details className="px-4 group">
+              <summary className="cursor-pointer flex items-center justify-between px-2 py-2 text-sm font-medium hover:bg-accent/40 rounded-md">
+                Services
+                <ChevronRight className="group-open:hidden w-4 h-4" />
+                <ChevronDown className="hidden group-open:block w-4 h-4" />
+              </summary>
+              <div className="ml-4 mt-2 flex flex-col space-y-1">
+                {services.map(({ id, label, path }) => (
+                  <a
+                    key={id}
+                    href={path}
+                    className="text-left px-4 py-2 hover:bg-accent/40 rounded-md block"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </details>
+
             <button
-              onClick={() => scrollToSection("services")}
-              className="block w-full text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-accent/50 rounded-md transition-colors"
-            >
-              Services
-            </button>
-            <button
-              onClick={() => scrollToSection("about")}
-              className="block w-full text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-accent/50 rounded-md transition-colors"
+              onClick={() => scrollTo("about")}
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-accent/40 rounded-md"
             >
               About
             </button>
             <button
-              onClick={() => scrollToSection("testimonials")}
-              className="block w-full text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-accent/50 rounded-md transition-colors"
+              onClick={() => scrollTo("testimonials")}
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-accent/40 rounded-md"
             >
               Testimonials
             </button>
             <button
-              onClick={() => scrollToSection("contact")}
-              className="block w-full text-left px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-accent/50 rounded-md transition-colors"
+              onClick={() => scrollTo("contact")}
+              className="block w-full text-left px-4 py-2 text-sm hover:bg-accent/40 rounded-md"
             >
               Contact
             </button>
+
             <div className="px-4 pt-2">
-              <Button
-                onClick={() => scrollToSection("contact")}
-                className="w-full"
-              >
+              <Button onClick={() => scrollTo("contact")} className="w-full">
                 Get Quote
               </Button>
             </div>
