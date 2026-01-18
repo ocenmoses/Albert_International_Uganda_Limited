@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import type { Variants } from "framer-motion";
+import ScrollAnimation from "@/components/ScrollAnimation";
+import Contact from "@/components/Contact";
 
 // Laundry Service Features
 const features = [
@@ -88,6 +90,37 @@ const Laundry = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  function scrollToSection(sectionId: string): void {
+    if (typeof window === "undefined") return;
+    if (!sectionId) return;
+
+    // quick aliases
+    if (sectionId === "top" || sectionId === "home" || sectionId === "hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const el =
+      document.getElementById(sectionId) ||
+      document.querySelector<HTMLElement>(`[data-section="${sectionId}"]`) ||
+      document.querySelector<HTMLElement>(`a[name="${sectionId}"]`);
+
+    if (!el) {
+      // fallback: scroll to top if target not found
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    // try to account for a fixed navbar if present
+    const nav = document.querySelector<HTMLElement>(
+      "nav, .navbar, [role='navigation']"
+    );
+    const offset = nav ? nav.getBoundingClientRect().height : 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset - 12; // small padding
+
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  }
+
   return (
     <div className="min-h-screen bg-background text-white relative">
       {/* NAVBAR FIX: Default dark background on mobile dropdown */}
@@ -143,10 +176,12 @@ const Laundry = () => {
           <div className="flex flex-wrap justify-center gap-4">
             <Button
               size="lg"
-              className="rounded-full hover:scale-105 transition-transform"
+              className="text-lg px-8 py-6"
+              onClick={() => scrollToSection("contact")}
             >
               Book Laundry Service
             </Button>
+
             <Button
               size="lg"
               variant="outline"
@@ -251,6 +286,15 @@ const Laundry = () => {
           </div>
         </motion.div>
       </section>
+      <ScrollAnimation animation="fade-left" delay={200}>
+        <div className="rounded-lg border bg-card p-8">
+          {/* Controlled contact form that posts to a configurable Formspree endpoint.
+                          Configure the endpoint using VITE_FORMSPREE_ENDPOINT or
+                          VITE_FORMSPREE_FORM_ID in a .env file (see .env.example).
+                      */}
+          <Contact />
+        </div>
+      </ScrollAnimation>
     </div>
   );
 };
