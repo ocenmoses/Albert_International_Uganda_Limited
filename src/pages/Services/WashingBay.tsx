@@ -2,7 +2,9 @@ import { Car, Droplets, ShieldCheck, Clock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HeroBackground from "@/components/HeroBackground";
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
+import Navbar from "@/components/Navbar"; // Make sure to import your Navbar
 
 const features = [
   {
@@ -31,13 +33,17 @@ const features = [
   },
 ];
 
-// Framer Motion variants
-const fadeUpVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (i: number) => ({
+// Animation
+const fadeUpVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
+    transition: {
+      delay: i * 0.08,
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
   }),
 };
 
@@ -60,7 +66,7 @@ const WashingBay = () => {
     return () => mq.removeEventListener("change", handleChange);
   }, []);
 
-  // Parallax only for hero section
+  // Parallax (hero section only)
   useEffect(() => {
     const handleScroll = () => {
       if (videoRef.current) {
@@ -77,45 +83,47 @@ const WashingBay = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-white pt-24 pb-12 overflow-x-hidden">
-      {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
+    <div className="min-h-screen bg-background text-white overflow-x-hidden">
+      {/* HERO SECTION */}
+      <section className="relative min-h-[80vh] flex flex-col items-center justify-center overflow-hidden">
+        {/* Background Video */}
         <HeroBackground
-          videoSrc="/washingbay.mp4"
-          ref={videoRef}
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          {...({ videoRef, videoSrc: "/washingbay.mp4" } as any)}
+          className="absolute inset-0 w-full h-full object-cover z-0"
         />
-        {/* Overlay */}
-        <div className="absolute top-0 left-0 w-full h-full bg-black/40 z-0"></div>
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+
+        {/* Navbar on top of video */}
+        <div className="absolute top-0 left-0 right-0 z-20">
+          <Navbar />
+          {/* Pass transparent prop to make it sit over video */}
+        </div>
 
         {/* Hero Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 max-w-4xl mx-auto text-center px-4"
+          className="relative z-20 text-center px-4 max-w-4xl mx-auto mt-24"
         >
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Professional Washing Bay
           </h1>
           <p className="text-lg text-white/90 mb-8">
-            Premium vehicle care solutions combining advanced pressure washing
-            technology with meticulous hand-finishing. We don't just wash; we
-            preserve your investment.
+            Premium vehicle care combining advanced pressure washing with
+            meticulous hand-finishing. We don't just wash — we preserve your
+            investment.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button
-              size="lg"
-              className="rounded-full hover:scale-105 transition-transform"
-            >
+          <div className="flex justify-center flex-wrap gap-4">
+            <Button size="lg" className="rounded-full hover:scale-105">
               Book a Wash
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full hover:scale-105 transition-transform"
+              className="rounded-full hover:scale-105"
             >
               View Pricing
             </Button>
@@ -123,7 +131,7 @@ const WashingBay = () => {
         </motion.div>
       </section>
 
-      {/* Feature Grid */}
+      {/* FEATURE GRID */}
       <section className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
@@ -132,20 +140,20 @@ const WashingBay = () => {
               custom={index}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true }}
               variants={fadeUpVariants}
               whileHover={{
                 scale: 1.05,
                 y: -5,
                 boxShadow: "0 15px 25px rgba(0,0,0,0.3)",
               }}
-              className="p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm transition-all duration-300"
+              className="p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm transition-all"
             >
               <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-white/90 text-sm leading-relaxed">
+              <h3 className="text-xl font-semibold">{feature.title}</h3>
+              <p className="text-white/90 text-sm mt-2">
                 {feature.description}
               </p>
             </motion.div>
@@ -153,14 +161,13 @@ const WashingBay = () => {
         </div>
       </section>
 
-      {/* Content Section */}
+      {/* CONTENT SECTION */}
       <section className="container mx-auto px-4 py-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-accent/30 rounded-3xl p-8 md:p-12 overflow-hidden"
+          className="bg-accent/30 rounded-3xl p-8 md:p-12"
         >
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -178,7 +185,6 @@ const WashingBay = () => {
                     key={i}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
                     transition={{ delay: i * 0.15, duration: 0.5 }}
                     className="flex items-center gap-3"
                   >
@@ -188,14 +194,14 @@ const WashingBay = () => {
                 ))}
               </ul>
             </div>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl border border-primary/10 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+              <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl border border-primary/10 flex items-center justify-center hover:scale-105 transition-transform">
                 <Car className="w-24 h-24 text-primary/40" />
               </div>
             </motion.div>

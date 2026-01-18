@@ -123,7 +123,11 @@ const Navbar = () => {
             onClick={() => scrollTo("home")}
             className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
           >
-            AIU
+            <img
+              src="/AIU_favicon.png"
+              alt="AIU Logo"
+              className="h-8 w-10 rounded-full"
+            />
           </button>
 
           {/* Desktop Nav */}

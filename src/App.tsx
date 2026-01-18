@@ -58,25 +58,23 @@ function Home() {
         {/* Background Video/Image */}
         <HeroBackground
           // Uncomment and add your video URL here
-          videoSrc="/clean.mp4"
+          // videoSrc="/clean.mp4"
           // poster="/images/cleaning-hero-poster.jpg"
 
-          // Or use an image instead
-          // imageSrc="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070&auto=format&fit=crop"
+          // Or use an image instead. Increase overlayOpacity to dim the
+          // background so hero content is more readable.
+          imageSrc="/images/AIU.png"
+          overlayOpacity={0.6}
         />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-fade-in">
-              <Sparkles className="h-4 w-4" />
-              Professional Cleaning Services
-            </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/80 bg-clip-text text-transparent">
-              Your Space, Our Expertise
+              Albert International Uganda Limited
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Transform your home or office with our professional cleaning
-              services. We deliver spotless results every time.
+              A trusted professional multi-service group of companies providing
+              high quality, standard, fast and reliable servises
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -424,6 +422,10 @@ function Home() {
 
 import CleaningPage from "./pages/Services/Cleaning";
 import WashingBayPage from "./pages/Services/WashingBay";
+import Laundry from "./pages/Services/Laundry";
+import Engineering from "./pages/Services/Engineering";
+import TradingPage from "./pages/Services/TradingPage";
+import IceCreamPage from "./pages/Services/IceCreamPage";
 
 export default function App() {
   return (
@@ -434,6 +436,10 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/services/cleaning" element={<CleaningPage />} />
         <Route path="/services/washing-bay" element={<WashingBayPage />} />
+        <Route path="/services/laundry" element={<Laundry />} />
+        <Route path="/services/engineering" element={<Engineering />} />
+        <Route path="/services/trading" element={<TradingPage />} />
+        <Route path="/services/ice-cream" element={<IceCreamPage />} />
       </Routes>
     </BrowserRouter>
   );
