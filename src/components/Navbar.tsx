@@ -36,25 +36,81 @@ const Navbar = () => {
 
   // Theme and scroll effects
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDark(mq.matches);
+    // Check system theme
+    const checkTheme = () => {
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      setIsDark(prefersDark);
+      document.documentElement.classList.toggle("dark", prefersDark);
+    };
 
-    const handleTheme = (e: MediaQueryListEvent) => {
+    // Initial check
+    checkTheme();
+
+    // Listen for theme changes
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleThemeChange = (e: MediaQueryListEvent) => {
       setIsDark(e.matches);
       document.documentElement.classList.toggle("dark", e.matches);
     };
 
-    document.documentElement.classList.toggle("dark", mq.matches);
-    mq.addEventListener("change", handleTheme);
+    mq.addEventListener("change", handleThemeChange);
 
+    // Scroll handler
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      mq.removeEventListener("change", handleTheme);
+      mq.removeEventListener("change", handleThemeChange);
     };
   }, []);
+
+  // Get glassmorphism styles based on theme
+  const getGlassStyles = () => {
+    if (!isScrolled) {
+      return {
+        navStyle: {
+          background: "transparent",
+          backdropFilter: "none",
+          borderColor: "transparent",
+        },
+        textColor: isDark ? "text-gray-100" : "text-gray-900",
+        hoverText: isDark ? "hover:text-blue-300" : "hover:text-blue-600",
+      };
+    }
+
+    if (isDark) {
+      return {
+        navStyle: {
+          background: "rgba(15, 23, 42, 0.7)", // Dark glass
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          borderColor: "rgba(255, 255, 255, 0.08)",
+        },
+        textColor: "text-gray-100",
+        hoverText: "hover:text-blue-300",
+        dropdownBg: "rgba(15, 23, 42, 0.95)",
+        mobileMenuBg: "rgba(15, 23, 42, 0.95)",
+      };
+    } else {
+      return {
+        navStyle: {
+          background: "rgba(255, 255, 255, 0.7)", // Light glass
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          borderColor: "rgba(0, 0, 0, 0.08)",
+        },
+        textColor: "text-gray-900",
+        hoverText: "hover:text-blue-600",
+        dropdownBg: "rgba(255, 255, 255, 0.95)",
+        mobileMenuBg: "rgba(255, 255, 255, 0.95)",
+      };
+    }
+  };
+
+  const glassStyles = getGlassStyles();
 
   // Smooth scroll function
   const scrollTo = (id: string) => {
@@ -102,18 +158,12 @@ const Navbar = () => {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border/40 shadow-lg mx-4 mt-4 rounded-2xl"
-          : "bg-transparent"
+        isScrolled ? "mx-4 mt-4 rounded-2xl shadow-xl" : "",
+        glassStyles.textColor
       )}
       style={{
-        backdropFilter: isScrolled ? "blur(12px) saturate(180%)" : "none",
-        WebkitBackdropFilter: isScrolled ? "blur(12px) saturate(180%)" : "none",
-        backgroundColor: isScrolled
-          ? isDark
-            ? "rgba(17, 24, 39, 0.7)"
-            : "rgba(255, 255, 255, 0.7)"
-          : "transparent",
+        ...glassStyles.navStyle,
+        transition: "all 0.3s ease",
       }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -121,20 +171,32 @@ const Navbar = () => {
           {/* Logo */}
           <button
             onClick={() => scrollTo("home")}
-            className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
+            className="text-2xl md:text-3xl font-bold flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             <img
               src="/AIU_favicon.png"
               alt="AIU Logo"
-              className="h-8 w-10 rounded-full"
+              className="h-8 w-8 md:h-10 md:w-10 rounded-full border-2 border-white/20 shadow-lg"
             />
+            <span
+              className={cn(
+                "bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent",
+                isDark && "from-blue-400 to-purple-400"
+              )}
+            >
+              AIU
+            </span>
           </button>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             <button
               onClick={() => scrollTo("home")}
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+              className={cn(
+                "text-sm font-medium transition-colors duration-200",
+                glassStyles.textColor,
+                glassStyles.hoverText
+              )}
             >
               Home
             </button>
@@ -145,23 +207,48 @@ const Navbar = () => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <button className="flex items-center gap-1 text-sm font-medium text-foreground/80 hover:text-primary transition-colors">
+              <button
+                className={cn(
+                  "flex items-center gap-1 text-sm font-medium transition-colors duration-200",
+                  glassStyles.textColor,
+                  glassStyles.hoverText
+                )}
+              >
                 Services
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
+                  className={cn(
+                    "w-4 h-4 transition-transform duration-200",
                     isDropdownOpen ? "rotate-180" : ""
-                  }`}
+                  )}
                 />
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute bg-background shadow-lg border border-border rounded-md mt-2 w-64">
+                <div
+                  className={cn(
+                    "absolute top-full mt-2 w-64 rounded-2xl shadow-2xl border",
+                    isDark ? "border-white/10" : "border-black/10"
+                  )}
+                  style={{
+                    background: glassStyles.dropdownBg,
+                    backdropFilter: "blur(20px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                  }}
+                >
                   <div className="flex flex-col py-2">
                     {services.map(({ id, label, path }) => (
                       <a
                         key={id}
                         href={path}
-                        className="block px-4 py-2 text-left hover:bg-accent/40"
+                        className={cn(
+                          "block px-4 py-3 text-left transition-all duration-200 font-medium",
+                          glassStyles.textColor,
+                          isDark
+                            ? "hover:bg-white/10 hover:pl-5"
+                            : "hover:bg-black/5 hover:pl-5",
+                          "first:rounded-t-2xl last:rounded-b-2xl"
+                        )}
+                        onClick={() => setIsDropdownOpen(false)}
                       >
                         {label}
                       </a>
@@ -173,23 +260,43 @@ const Navbar = () => {
 
             <button
               onClick={() => scrollTo("about")}
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+              className={cn(
+                "text-sm font-medium transition-colors duration-200",
+                glassStyles.textColor,
+                glassStyles.hoverText
+              )}
             >
               About
             </button>
             <button
               onClick={() => scrollTo("testimonials")}
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+              className={cn(
+                "text-sm font-medium transition-colors duration-200",
+                glassStyles.textColor,
+                glassStyles.hoverText
+              )}
             >
               Testimonials
             </button>
             <button
               onClick={() => scrollTo("contact")}
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+              className={cn(
+                "text-sm font-medium transition-colors duration-200",
+                glassStyles.textColor,
+                glassStyles.hoverText
+              )}
             >
               Contact
             </button>
-            <Button onClick={() => scrollTo("contact")} className="ml-4">
+            <Button
+              onClick={() => scrollTo("contact")}
+              className={cn(
+                "ml-4 shadow-lg hover:shadow-xl transition-all duration-200",
+                isDark
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+              )}
+            >
               Get Quote
             </Button>
           </div>
@@ -197,7 +304,13 @@ const Navbar = () => {
           {/* Mobile Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-md text-foreground hover:bg-accent transition-colors"
+            className={cn(
+              "md:hidden p-2 rounded-lg transition-all duration-200",
+              isDark
+                ? "hover:bg-white/10 text-gray-100"
+                : "hover:bg-black/10 text-gray-900"
+            )}
+            aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
               <X className="h-6 w-6" />
@@ -209,26 +322,56 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-4 border-t border-border/40">
+          <div
+            className={cn(
+              "md:hidden absolute top-full left-0 right-0 mt-2 mx-4 py-4 space-y-2 rounded-2xl shadow-2xl border",
+              isDark ? "border-white/10" : "border-black/10"
+            )}
+            style={{
+              background: glassStyles.mobileMenuBg,
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+            }}
+          >
             <button
               onClick={() => scrollTo("home")}
-              className="block w-full text-left px-4 py-2 text-sm font-medium hover:bg-accent/40 rounded-md"
+              className={cn(
+                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
+                glassStyles.textColor,
+                isDark
+                  ? "hover:bg-white/10 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7"
+              )}
             >
               Home
             </button>
 
-            <details className="px-4 group">
-              <summary className="cursor-pointer flex items-center justify-between px-2 py-2 text-sm font-medium hover:bg-accent/40 rounded-md">
+            <details className="group mx-2">
+              <summary
+                className={cn(
+                  "cursor-pointer flex items-center justify-between px-6 py-3 text-sm font-medium transition-all duration-200 rounded-xl",
+                  glassStyles.textColor,
+                  isDark
+                    ? "hover:bg-white/10 hover:pl-7"
+                    : "hover:bg-black/5 hover:pl-7"
+                )}
+              >
                 Services
                 <ChevronRight className="group-open:hidden w-4 h-4" />
                 <ChevronDown className="hidden group-open:block w-4 h-4" />
               </summary>
-              <div className="ml-4 mt-2 flex flex-col space-y-1">
+              <div className="ml-4 mt-1 flex flex-col space-y-1">
                 {services.map(({ id, label, path }) => (
                   <a
                     key={id}
                     href={path}
-                    className="text-left px-4 py-2 hover:bg-accent/40 rounded-md block"
+                    className={cn(
+                      "text-left px-4 py-2.5 rounded-lg transition-all duration-200 block text-sm font-medium mx-2",
+                      glassStyles.textColor,
+                      isDark
+                        ? "hover:bg-white/10 hover:pl-5"
+                        : "hover:bg-black/5 hover:pl-5"
+                    )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {label}
@@ -239,25 +382,51 @@ const Navbar = () => {
 
             <button
               onClick={() => scrollTo("about")}
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-accent/40 rounded-md"
+              className={cn(
+                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
+                glassStyles.textColor,
+                isDark
+                  ? "hover:bg-white/10 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7"
+              )}
             >
               About
             </button>
             <button
               onClick={() => scrollTo("testimonials")}
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-accent/40 rounded-md"
+              className={cn(
+                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
+                glassStyles.textColor,
+                isDark
+                  ? "hover:bg-white/10 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7"
+              )}
             >
               Testimonials
             </button>
             <button
               onClick={() => scrollTo("contact")}
-              className="block w-full text-left px-4 py-2 text-sm hover:bg-accent/40 rounded-md"
+              className={cn(
+                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
+                glassStyles.textColor,
+                isDark
+                  ? "hover:bg-white/10 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7"
+              )}
             >
               Contact
             </button>
 
-            <div className="px-4 pt-2">
-              <Button onClick={() => scrollTo("contact")} className="w-full">
+            <div className="px-6 pt-2">
+              <Button
+                onClick={() => scrollTo("contact")}
+                className={cn(
+                  "w-full shadow-lg hover:shadow-xl transition-all duration-200",
+                  isDark
+                    ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                    : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                )}
+              >
                 Get Quote
               </Button>
             </div>

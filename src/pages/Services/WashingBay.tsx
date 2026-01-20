@@ -122,7 +122,7 @@ const WashingBay = () => {
         <section className="relative min-h-[80vh] flex flex-col items-center justify-center overflow-hidden">
           {/* Background Video */}
           <HeroBackground
-            {...({ videoRef, videoSrc: "/washingbay.mp4" } as any)}
+            {...({ videoRef, videoSrc: "/videos/washingbay.mp4" } as any)}
             className="absolute inset-0 w-full h-full object-cover z-0"
           />
 
