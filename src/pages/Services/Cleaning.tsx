@@ -1,5 +1,4 @@
 // src/pages/services/cleaning.tsx
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Sparkles,
@@ -148,7 +147,6 @@ const services: Service[] = [
 ];
 
 export default function CleaningPage() {
-  const [, setSelectedService] = useState<Service | null>(null);
   const navigate = useNavigate();
 
   // Navigate to Home page and scroll to Contact section
@@ -211,7 +209,9 @@ export default function CleaningPage() {
               <div
                 key={service.id}
                 className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2"
-                onClick={() => setSelectedService(service)}
+                onClick={() =>
+                  navigate(`/services/cleaning#service-${service.id}`)
+                }
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
