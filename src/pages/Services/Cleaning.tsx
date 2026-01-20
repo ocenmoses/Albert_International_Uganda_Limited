@@ -12,8 +12,6 @@ import {
   Factory,
   CheckCircle,
   ArrowRight,
-  Phone,
-  Mail,
 } from "lucide-react";
 
 type Service = {
@@ -150,7 +148,7 @@ const services: Service[] = [
 ];
 
 export default function CleaningPage() {
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [, setSelectedService] = useState<Service | null>(null);
   const navigate = useNavigate();
 
   // Navigate to Home page and scroll to Contact section

@@ -8,16 +8,7 @@ import HeroBackground from "./components/HeroBackground";
 import WhatsAppButton from "./components/WhatsAppButton";
 import { Button } from "./components/ui/button";
 import "./App.css";
-import {
-  Sparkles,
-  Phone,
-  Mail,
-  MapPin,
-  Clock,
-  Users,
-  Award,
-  Shield,
-} from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Users, Award, Shield } from "lucide-react";
 
 function Home() {
   useEffect(() => {

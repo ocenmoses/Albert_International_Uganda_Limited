@@ -54,7 +54,7 @@ const fadeUpVariants: Variants = {
 };
 
 const Laundry = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [, setIsDark] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   // Detect and apply system theme

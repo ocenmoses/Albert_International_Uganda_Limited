@@ -50,7 +50,7 @@ const fadeUpVariants: Variants = {
 };
 
 const WashingBay = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [, setIsDark] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Detect system theme

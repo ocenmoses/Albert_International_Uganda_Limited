@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroBackground from "@/components/HeroBackground";
 import { Button } from "@/components/ui/button";
-import { Clock, Mail } from "lucide-react";
+import { Clock } from "lucide-react";
 
 const TradingPage = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

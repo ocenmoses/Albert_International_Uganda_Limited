@@ -12,7 +12,6 @@ import {
   RefreshCcw,
   Map,
   MapPin,
-  FileText,
   Zap,
   HardHat,
   CheckCircle2,
