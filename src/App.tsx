@@ -61,11 +61,14 @@ function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/80 bg-clip-text text-transparent">
-              Albert International Uganda Limited
+              Olwit Ejang International Limited
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               A trusted professional multi-service group of companies providing
-              high quality, standard, fast and reliable servises
+              high quality, standard, fast, speedy and safe variety speedy and
+              safe of speedy and safe services, speedy and safe works speedy and
+              safe and speedy and safe products speedy and safe world speedy and
+              safe wide and reliable servises
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -93,15 +96,17 @@ function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollAnimation animation="fade-up" className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-              Our Services
+              Our Services, Works, Products and Supply
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive cleaning solutions tailored to your needs
-            </p>
           </ScrollAnimation>
 
           <ScrollAnimation animation="fade-up" delay={200}>
-            <ServicesCarousel />
+            <ServicesCarousel />A High Quality Professional Services, Works and
+            Products assured to our valuable clients.
+            <p>
+              Fast, Efficient and Timely Work, Products and Services Completion
+              and delivery to client's orders
+            </p>
           </ScrollAnimation>
         </div>
       </section>
@@ -116,10 +121,15 @@ function Home() {
                   Why Choose Albert International Uganda Limited?
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8">
-                  With years of experience and a commitment to excellence, we've
-                  become the trusted choice for cleaning services in the area.
-                  Our team is trained, insured, and dedicated to making your
-                  space shine.
+                  Olwit Ejang International Limited is a trusted professional
+                  group of companies providing MultiServices, Work, Supply and
+                  Products Globally. Our Professional and experienced Director,
+                  Team of Advisors, Consultants, Staff and Partners across all
+                  continents and use of wide modern quality machines and
+                  technology make our services, works and products reliable and
+                  trustworthy and satisfactory. Our company is built to handle
+                  current world's population demands, needs and solve problems
+                  to both people and world itself.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
@@ -187,19 +197,19 @@ function Home() {
                               {num === 1
                                 ? "500+"
                                 : num === 2
-                                ? "98%"
-                                : num === 3
-                                ? "24/7"
-                                : "5★"}
+                                  ? "98%"
+                                  : num === 3
+                                    ? "24/7"
+                                    : "5★"}
                             </div>
                             <div className="text-xs text-muted-foreground">
                               {num === 1
                                 ? "Happy Clients"
                                 : num === 2
-                                ? "Satisfaction"
-                                : num === 3
-                                ? "Support"
-                                : "Rating"}
+                                  ? "Satisfaction"
+                                  : num === 3
+                                    ? "Support"
+                                    : "Rating"}
                             </div>
                           </div>
                         </div>
@@ -477,7 +487,7 @@ function ContactForm() {
       const body = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\n${formData.message}`;
       // Use mailto to open the user's mail client with prefilled content.
       window.location.href = `mailto:${to}?subject=${encodeURIComponent(
-        subject
+        subject,
       )}&body=${encodeURIComponent(body)}`;
       setStatus("success");
       return;

@@ -39,7 +39,7 @@ const Navbar = () => {
     // Check system theme
     const checkTheme = () => {
       const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
+        "(prefers-color-scheme: dark)",
       ).matches;
       setIsDark(prefersDark);
       document.documentElement.classList.toggle("dark", prefersDark);
@@ -159,7 +159,7 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "mx-4 mt-4 rounded-2xl shadow-xl" : "",
-        glassStyles.textColor
+        glassStyles.textColor,
       )}
       style={{
         ...glassStyles.navStyle,
@@ -181,10 +181,10 @@ const Navbar = () => {
             <span
               className={cn(
                 "bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent",
-                isDark && "from-blue-400 to-purple-400"
+                isDark && "from-blue-400 to-purple-400",
               )}
             >
-              AIU
+              OIL
             </span>
           </button>
 
@@ -195,7 +195,7 @@ const Navbar = () => {
               className={cn(
                 "text-sm font-medium transition-colors duration-200",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               Home
@@ -211,14 +211,14 @@ const Navbar = () => {
                 className={cn(
                   "flex items-center gap-1 text-sm font-medium transition-colors duration-200",
                   glassStyles.textColor,
-                  glassStyles.hoverText
+                  glassStyles.hoverText,
                 )}
               >
                 Services
                 <ChevronDown
                   className={cn(
                     "w-4 h-4 transition-transform duration-200",
-                    isDropdownOpen ? "rotate-180" : ""
+                    isDropdownOpen ? "rotate-180" : "",
                   )}
                 />
               </button>
@@ -227,7 +227,7 @@ const Navbar = () => {
                 <div
                   className={cn(
                     "absolute top-full mt-2 w-64 rounded-2xl shadow-2xl border",
-                    isDark ? "border-white/10" : "border-black/10"
+                    isDark ? "border-white/10" : "border-black/10",
                   )}
                   style={{
                     background: glassStyles.dropdownBg,
@@ -246,7 +246,7 @@ const Navbar = () => {
                           isDark
                             ? "hover:bg-white/10 hover:pl-5"
                             : "hover:bg-black/5 hover:pl-5",
-                          "first:rounded-t-2xl last:rounded-b-2xl"
+                          "first:rounded-t-2xl last:rounded-b-2xl",
                         )}
                         onClick={() => setIsDropdownOpen(false)}
                       >
@@ -263,7 +263,7 @@ const Navbar = () => {
               className={cn(
                 "text-sm font-medium transition-colors duration-200",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               About
@@ -273,7 +273,7 @@ const Navbar = () => {
               className={cn(
                 "text-sm font-medium transition-colors duration-200",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               Testimonials
@@ -283,7 +283,7 @@ const Navbar = () => {
               className={cn(
                 "text-sm font-medium transition-colors duration-200",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               Contact
@@ -294,7 +294,7 @@ const Navbar = () => {
                 "ml-4 shadow-lg hover:shadow-xl transition-all duration-200",
                 isDark
                   ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600",
               )}
             >
               Get Quote
@@ -308,7 +308,7 @@ const Navbar = () => {
               "md:hidden p-2 rounded-lg transition-all duration-200",
               isDark
                 ? "hover:bg-white/10 text-gray-100"
-                : "hover:bg-black/10 text-gray-900"
+                : "hover:bg-black/10 text-gray-900",
             )}
             aria-label="Toggle menu"
           >
@@ -325,7 +325,7 @@ const Navbar = () => {
           <div
             className={cn(
               "md:hidden absolute top-full left-0 right-0 mt-2 mx-4 py-4 space-y-2 rounded-2xl shadow-2xl border",
-              isDark ? "border-white/10" : "border-black/10"
+              isDark ? "border-white/10" : "border-black/10",
             )}
             style={{
               background: glassStyles.mobileMenuBg,
@@ -340,7 +340,7 @@ const Navbar = () => {
                 glassStyles.textColor,
                 isDark
                   ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7",
               )}
             >
               Home
@@ -353,7 +353,7 @@ const Navbar = () => {
                   glassStyles.textColor,
                   isDark
                     ? "hover:bg-white/10 hover:pl-7"
-                    : "hover:bg-black/5 hover:pl-7"
+                    : "hover:bg-black/5 hover:pl-7",
                 )}
               >
                 Services
@@ -370,7 +370,7 @@ const Navbar = () => {
                       glassStyles.textColor,
                       isDark
                         ? "hover:bg-white/10 hover:pl-5"
-                        : "hover:bg-black/5 hover:pl-5"
+                        : "hover:bg-black/5 hover:pl-5",
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -387,7 +387,7 @@ const Navbar = () => {
                 glassStyles.textColor,
                 isDark
                   ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7",
               )}
             >
               About
@@ -399,7 +399,7 @@ const Navbar = () => {
                 glassStyles.textColor,
                 isDark
                   ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7",
               )}
             >
               Testimonials
@@ -411,7 +411,7 @@ const Navbar = () => {
                 glassStyles.textColor,
                 isDark
                   ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
+                  : "hover:bg-black/5 hover:pl-7",
               )}
             >
               Contact
@@ -424,7 +424,7 @@ const Navbar = () => {
                   "w-full shadow-lg hover:shadow-xl transition-all duration-200",
                   isDark
                     ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                    : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+                    : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600",
                 )}
               >
                 Get Quote
