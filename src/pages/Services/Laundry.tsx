@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { Variants } from "framer-motion";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import Contact from "@/components/Contact";
@@ -54,17 +54,14 @@ const fadeUpVariants: Variants = {
 };
 
 const Laundry = () => {
-  const [, setIsDark] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   // Detect and apply system theme
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDark(mq.matches);
     document.documentElement.classList.toggle("dark", mq.matches);
 
     const handleChange = (e: MediaQueryListEvent) => {
-      setIsDark(e.matches);
       document.documentElement.classList.toggle("dark", e.matches);
     };
 
@@ -113,7 +110,7 @@ const Laundry = () => {
 
     // try to account for a fixed navbar if present
     const nav = document.querySelector<HTMLElement>(
-      "nav, .navbar, [role='navigation']"
+      "nav, .navbar, [role='navigation']",
     );
     const offset = nav ? nav.getBoundingClientRect().height : 0;
     const top = el.getBoundingClientRect().top + window.scrollY - offset - 12; // small padding

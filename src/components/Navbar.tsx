@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Utility function to merge class names
 const cn = (...classes: Array<string | false | null | undefined>) =>
   classes.filter(Boolean).join(" ");
 
@@ -23,7 +22,6 @@ const services = [
     path: "/services/ice-cream",
   },
 ];
-let dropdownTimeout: ReturnType<typeof setTimeout>;
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,24 +29,22 @@ const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // Fixed the red line for the timeout
+  const timeoutRef = useRef<number | null>(null);
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Theme and scroll effects
   useEffect(() => {
-    // Check system theme
     const checkTheme = () => {
       const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
+        "(prefers-color-scheme: dark)",
       ).matches;
       setIsDark(prefersDark);
       document.documentElement.classList.toggle("dark", prefersDark);
     };
-
-    // Initial check
     checkTheme();
 
-    // Listen for theme changes
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const handleThemeChange = (e: MediaQueryListEvent) => {
       setIsDark(e.matches);
@@ -56,8 +52,6 @@ const Navbar = () => {
     };
 
     mq.addEventListener("change", handleThemeChange);
-
-    // Scroll handler
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
 
@@ -67,8 +61,11 @@ const Navbar = () => {
     };
   }, []);
 
-  // Get glassmorphism styles based on theme
   const getGlassStyles = () => {
+    // Making main nav links white on both themes as requested
+    const textColor = "text-white";
+    const hoverText = "hover:text-blue-300";
+
     if (!isScrolled) {
       return {
         navStyle: {
@@ -76,43 +73,42 @@ const Navbar = () => {
           backdropFilter: "none",
           borderColor: "transparent",
         },
-        textColor: isDark ? "text-gray-100" : "text-gray-900",
-        hoverText: isDark ? "hover:text-blue-300" : "hover:text-blue-600",
+        textColor,
+        hoverText,
       };
     }
 
     if (isDark) {
       return {
         navStyle: {
-          background: "rgba(15, 23, 42, 0.7)", // Dark glass
+          background: "rgba(15, 23, 42, 0.7)",
           backdropFilter: "blur(16px) saturate(180%)",
           WebkitBackdropFilter: "blur(16px) saturate(180%)",
           borderColor: "rgba(255, 255, 255, 0.08)",
         },
-        textColor: "text-gray-100",
-        hoverText: "hover:text-blue-300",
+        textColor,
+        hoverText,
         dropdownBg: "rgba(15, 23, 42, 0.95)",
         mobileMenuBg: "rgba(15, 23, 42, 0.95)",
       };
     } else {
       return {
         navStyle: {
-          background: "rgba(255, 255, 255, 0.7)", // Light glass
+          background: "rgba(0, 0, 0, 0.5)", // Darker glass for light theme to keep white text visible
           backdropFilter: "blur(16px) saturate(180%)",
           WebkitBackdropFilter: "blur(16px) saturate(180%)",
-          borderColor: "rgba(0, 0, 0, 0.08)",
+          borderColor: "rgba(255, 255, 255, 0.1)",
         },
-        textColor: "text-gray-900",
-        hoverText: "hover:text-blue-600",
-        dropdownBg: "rgba(255, 255, 255, 0.95)",
-        mobileMenuBg: "rgba(255, 255, 255, 0.95)",
+        textColor,
+        hoverText,
+        dropdownBg: "rgba(30, 41, 59, 0.95)",
+        mobileMenuBg: "rgba(30, 41, 59, 0.95)",
       };
     }
   };
 
   const glassStyles = getGlassStyles();
 
-  // Smooth scroll function
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -124,34 +120,23 @@ const Navbar = () => {
     if (location.pathname !== "/") {
       navigate("/");
       setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-        setIsMobileMenuOpen(false);
-      }, 150);
-    } else {
-      navigate("/");
-      setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        document
+          .getElementById(id)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
         setIsMobileMenuOpen(false);
       }, 150);
     }
   };
 
-  // Desktop dropdown hover handlers
   const handleMouseEnter = () => {
-    clearTimeout(dropdownTimeout);
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
     setIsDropdownOpen(true);
   };
 
   const handleMouseLeave = () => {
-    dropdownTimeout = setTimeout(() => {
+    timeoutRef.current = window.setTimeout(() => {
       setIsDropdownOpen(false);
-    }, 1500); // 1.5s delay
+    }, 1500);
   };
 
   return (
@@ -159,49 +144,38 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "mx-4 mt-4 rounded-2xl shadow-xl" : "",
-        glassStyles.textColor
+        glassStyles.textColor,
       )}
-      style={{
-        ...glassStyles.navStyle,
-        transition: "all 0.3s ease",
-      }}
+      style={{ ...glassStyles.navStyle, transition: "all 0.3s ease" }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
           <button
             onClick={() => scrollTo("home")}
-            className="text-2xl md:text-3xl font-bold flex items-center gap-2 hover:opacity-80 transition-opacity"
+            className="text-2xl md:text-3xl font-bold flex items-center gap-2"
           >
             <img
               src="/AIU_favicon.png"
-              alt="AIU Logo"
-              className="h-8 w-8 md:h-10 md:w-10 rounded-full border-2 border-white/20 shadow-lg"
+              alt="Logo"
+              className="h-8 w-8 md:h-10 md:w-10 rounded-full"
             />
-            <span
-              className={cn(
-                "bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent",
-                isDark && "from-blue-400 to-purple-400"
-              )}
-            >
-              AIU
+            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              OIL
             </span>
           </button>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             <button
               onClick={() => scrollTo("home")}
               className={cn(
-                "text-sm font-medium transition-colors duration-200",
+                "text-sm font-medium transition-colors",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               Home
             </button>
 
-            {/* Services Dropdown */}
             <div
               className="relative"
               onMouseEnter={handleMouseEnter}
@@ -209,48 +183,35 @@ const Navbar = () => {
             >
               <button
                 className={cn(
-                  "flex items-center gap-1 text-sm font-medium transition-colors duration-200",
+                  "flex items-center gap-1 text-sm font-medium transition-colors",
                   glassStyles.textColor,
-                  glassStyles.hoverText
+                  glassStyles.hoverText,
                 )}
               >
-                Services
+                Services{" "}
                 <ChevronDown
                   className={cn(
-                    "w-4 h-4 transition-transform duration-200",
-                    isDropdownOpen ? "rotate-180" : ""
+                    "w-4 h-4 transition-transform",
+                    isDropdownOpen && "rotate-180",
                   )}
                 />
               </button>
-
               {isDropdownOpen && (
                 <div
-                  className={cn(
-                    "absolute top-full mt-2 w-64 rounded-2xl shadow-2xl border",
-                    isDark ? "border-white/10" : "border-black/10"
-                  )}
+                  className="absolute top-full mt-2 w-64 rounded-2xl shadow-2xl border border-white/10"
                   style={{
                     background: glassStyles.dropdownBg,
-                    backdropFilter: "blur(20px) saturate(180%)",
-                    WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                    backdropFilter: "blur(20px)",
                   }}
                 >
                   <div className="flex flex-col py-2">
-                    {services.map(({ id, label, path }) => (
+                    {services.map((s) => (
                       <a
-                        key={id}
-                        href={path}
-                        className={cn(
-                          "block px-4 py-3 text-left transition-all duration-200 font-medium",
-                          glassStyles.textColor,
-                          isDark
-                            ? "hover:bg-white/10 hover:pl-5"
-                            : "hover:bg-black/5 hover:pl-5",
-                          "first:rounded-t-2xl last:rounded-b-2xl"
-                        )}
-                        onClick={() => setIsDropdownOpen(false)}
+                        key={s.id}
+                        href={s.path}
+                        className="block px-4 py-3 text-white hover:bg-white/10 first:rounded-t-2xl last:rounded-b-2xl"
                       >
-                        {label}
+                        {s.label}
                       </a>
                     ))}
                   </div>
@@ -261,175 +222,79 @@ const Navbar = () => {
             <button
               onClick={() => scrollTo("about")}
               className={cn(
-                "text-sm font-medium transition-colors duration-200",
+                "text-sm font-medium transition-colors",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               About
             </button>
             <button
-              onClick={() => scrollTo("testimonials")}
-              className={cn(
-                "text-sm font-medium transition-colors duration-200",
-                glassStyles.textColor,
-                glassStyles.hoverText
-              )}
-            >
-              Testimonials
-            </button>
-            <button
               onClick={() => scrollTo("contact")}
               className={cn(
-                "text-sm font-medium transition-colors duration-200",
+                "text-sm font-medium transition-colors",
                 glassStyles.textColor,
-                glassStyles.hoverText
+                glassStyles.hoverText,
               )}
             >
               Contact
             </button>
             <Button
               onClick={() => scrollTo("contact")}
-              className={cn(
-                "ml-4 shadow-lg hover:shadow-xl transition-all duration-200",
-                isDark
-                  ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                  : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-              )}
+              className="bg-blue-600 text-white"
             >
               Get Quote
             </Button>
           </div>
 
-          {/* Mobile Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={cn(
-              "md:hidden p-2 rounded-lg transition-all duration-200",
-              isDark
-                ? "hover:bg-white/10 text-gray-100"
-                : "hover:bg-black/10 text-gray-900"
-            )}
-            aria-label="Toggle menu"
+            className="md:hidden text-white"
           >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <div
-            className={cn(
-              "md:hidden absolute top-full left-0 right-0 mt-2 mx-4 py-4 space-y-2 rounded-2xl shadow-2xl border",
-              isDark ? "border-white/10" : "border-black/10"
-            )}
+            className="md:hidden absolute top-full left-0 right-0 mt-2 mx-4 p-4 rounded-2xl border border-white/10"
             style={{
               background: glassStyles.mobileMenuBg,
-              backdropFilter: "blur(20px) saturate(180%)",
-              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              backdropFilter: "blur(20px)",
             }}
           >
             <button
               onClick={() => scrollTo("home")}
-              className={cn(
-                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
-                glassStyles.textColor,
-                isDark
-                  ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
-              )}
+              className="block w-full text-left p-3 text-white"
             >
               Home
             </button>
-
-            <details className="group mx-2">
-              <summary
-                className={cn(
-                  "cursor-pointer flex items-center justify-between px-6 py-3 text-sm font-medium transition-all duration-200 rounded-xl",
-                  glassStyles.textColor,
-                  isDark
-                    ? "hover:bg-white/10 hover:pl-7"
-                    : "hover:bg-black/5 hover:pl-7"
-                )}
-              >
-                Services
-                <ChevronRight className="group-open:hidden w-4 h-4" />
-                <ChevronDown className="hidden group-open:block w-4 h-4" />
+            <details className="group">
+              <summary className="flex justify-between p-3 text-white list-none">
+                Services <ChevronRight className="group-open:rotate-90" />
               </summary>
-              <div className="ml-4 mt-1 flex flex-col space-y-1">
-                {services.map(({ id, label, path }) => (
-                  <a
-                    key={id}
-                    href={path}
-                    className={cn(
-                      "text-left px-4 py-2.5 rounded-lg transition-all duration-200 block text-sm font-medium mx-2",
-                      glassStyles.textColor,
-                      isDark
-                        ? "hover:bg-white/10 hover:pl-5"
-                        : "hover:bg-black/5 hover:pl-5"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {label}
-                  </a>
-                ))}
-              </div>
+              {services.map((s) => (
+                <a
+                  key={s.id}
+                  href={s.path}
+                  className="block pl-8 py-2 text-white/80"
+                >
+                  {s.label}
+                </a>
+              ))}
             </details>
-
             <button
               onClick={() => scrollTo("about")}
-              className={cn(
-                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
-                glassStyles.textColor,
-                isDark
-                  ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
-              )}
+              className="block w-full text-left p-3 text-white"
             >
               About
             </button>
             <button
-              onClick={() => scrollTo("testimonials")}
-              className={cn(
-                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
-                glassStyles.textColor,
-                isDark
-                  ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
-              )}
-            >
-              Testimonials
-            </button>
-            <button
               onClick={() => scrollTo("contact")}
-              className={cn(
-                "block w-full text-left px-6 py-3 text-sm font-medium transition-all duration-200 mx-2 rounded-xl",
-                glassStyles.textColor,
-                isDark
-                  ? "hover:bg-white/10 hover:pl-7"
-                  : "hover:bg-black/5 hover:pl-7"
-              )}
+              className="block w-full text-left p-3 text-white"
             >
               Contact
             </button>
-
-            <div className="px-6 pt-2">
-              <Button
-                onClick={() => scrollTo("contact")}
-                className={cn(
-                  "w-full shadow-lg hover:shadow-xl transition-all duration-200",
-                  isDark
-                    ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                    : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                )}
-              >
-                Get Quote
-              </Button>
-            </div>
           </div>
         )}
       </div>

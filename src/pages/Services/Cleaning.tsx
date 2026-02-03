@@ -1,28 +1,21 @@
-// src/pages/services/cleaning.tsx
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
-  Sparkles,
-  Building2,
   Home,
+  Building2,
   Brush,
+  Sparkles,
   Sofa,
-  Truck,
-  Trees,
   Factory,
-  CheckCircle,
   ArrowRight,
+  X,
+  CheckCircle2,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import Contact from "@/components/Contact";
+import Navbar from "@/components/Navbar";
 
-type Service = {
-  id: number;
-  icon: any;
-  title: string;
-  description: string;
-  features: string[];
-  image: string;
-};
-
-const services: Service[] = [
+const services = [
   {
     id: 1,
     icon: Home,
@@ -33,46 +26,40 @@ const services: Service[] = [
       "General house cleaning",
       "Bathrooms & toilets",
       "Kitchens & appliances",
-      "Bedrooms & living rooms",
-      "Dusting & mopping",
       "Window cleaning",
-      "Balcony cleaning",
     ],
     image:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
   },
   {
     id: 2,
     icon: Building2,
-    title: "Office & Commercial Cleaning",
+    title: "Office & Commercial",
     description:
       "Professional cleaning solutions for your business environment.",
     features: [
       "Office spaces",
       "Conference rooms",
-      "Reception areas",
-      "Desks & equipment",
       "Floor sanitizing",
       "Waste management",
     ],
     image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
   },
   {
     id: 3,
     icon: Brush,
-    title: "Post-Construction Cleaning",
+    title: "Post-Construction",
     description:
-      "Transform your newly built or renovated space into a pristine environment.",
+      "Transform your newly built space into a pristine environment.",
     features: [
       "Removal of cement dust",
       "Glass cleaning",
       "Paint removal",
-      "Floor scrubbing",
-      "Final handover cleaning",
+      "Final handover",
     ],
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
   },
   {
     id: 4,
@@ -81,180 +68,230 @@ const services: Service[] = [
     description:
       "Intensive cleaning that reaches every corner of your property.",
     features: [
-      "Full interior deep cleaning",
       "Kitchen deep scrub",
-      "Bathroom scaling removal",
-      "Ceiling & high-surface cleaning",
-      "Mattress & sofa cleaning",
+      "Bathroom scaling",
+      "Ceiling cleaning",
+      "Mattress cleaning",
     ],
     image:
-      "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&q=80",
   },
   {
     id: 5,
     icon: Sofa,
-    title: "Carpet & Upholstery Cleaning",
+    title: "Carpet & Upholstery",
     description:
-      "Revitalize your carpets and furniture with our specialized cleaning.",
+      "Revitalize your carpets and furniture with specialized cleaning.",
     features: [
-      "Carpet vacuuming",
-      "Shampooing",
+      "Carpet shampooing",
       "Stain removal",
-      "Sofa & chair cleaning",
+      "Sofa cleaning",
+      "Fabric protection",
     ],
     image:
-      "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&q=80",
   },
   {
     id: 6,
-    icon: Truck,
-    title: "Move-In / Move-Out Cleaning",
-    description:
-      "Make your transition smooth with our thorough moving cleaning services.",
-    features: ["Houses", "Apartments", "Offices", "Full sanitization"],
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
-  },
-  {
-    id: 7,
-    icon: Trees,
-    title: "Outdoor Cleaning",
-    description:
-      "Maintain pristine outdoor spaces with our comprehensive exterior cleaning.",
-    features: [
-      "Compound sweeping",
-      "Pathways & pavements",
-      "Gate & fence cleaning",
-      "Garden cleaning",
-    ],
-    image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-  },
-  {
-    id: 8,
     icon: Factory,
     title: "Industrial Cleaning",
     description: "Heavy-duty cleaning solutions for industrial facilities.",
-    features: [
-      "Warehouses",
-      "Factories",
-      "Machinery cleaning",
-      "Oil & grease removal",
-    ],
+    features: ["Warehouses", "Factories", "Machinery cleaning", "Degreasing"],
     image:
-      "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80",
   },
 ];
 
 export default function CleaningPage() {
-  const navigate = useNavigate();
+  const [selectedService, setSelectedService] = useState<
+    null | (typeof services)[0]
+  >(null);
 
-  // Navigate to Home page and scroll to Contact section
-  const goToHomeContact = () => {
-    navigate("/", { state: { scrollTo: "contact" } });
+  // Sync with system theme and handle modal overflow
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const applyTheme = (isDark: boolean) =>
+      document.documentElement.classList.toggle("dark", isDark);
+    applyTheme(mq.matches);
+    mq.addEventListener("change", (e) => applyTheme(e.matches));
+
+    if (selectedService) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => mq.removeEventListener("change", (e) => applyTheme(e.matches));
+  }, [selectedService]);
+
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-gray-900 dark:to-gray-800">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br to-indigo-800 text-white pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&h=1080&fit=crop')] bg-cover bg-center opacity-10"></div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Professional Cleaning Services
+    <div className="min-h-screen bg-background text-foreground w-full overflow-x-hidden">
+      <Navbar />
+
+      {/* --- CINEMATIC HERO --- */}
+      <section className="relative w-full min-h-[85vh] flex items-center pt-20 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={services[0].image}
+            className="w-full h-full object-cover"
+            alt="Hero"
+          />
+          <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[2px]" />
+        </div>
+
+        <div className="container mx-auto relative z-20 px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-5xl sm:text-7xl font-black text-white leading-tight mb-6 uppercase italic tracking-tighter">
+              Elite <span className="text-blue-400">Cleaning</span> Solutions
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
-              Experience the difference of pristine cleanliness. We deliver
-              exceptional cleaning solutions tailored to your needs.
+            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
+              Premium sanitization for Ugandan homes and industries. We don't
+              just clean; we restore health and clarity to your space.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {/* Updated button */}
-              <button
-                onClick={goToHomeContact}
-                className="bg-white text-blue-700 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg text-center"
-              >
-                Get a Free Quote
-              </button>
-              <a
-                href="#services-grid"
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all text-center"
-              >
-                View Our Work
-              </a>
-            </div>
+            <Button
+              onClick={scrollToContact}
+              className="bg-blue-600 hover:bg-blue-700 text-white h-16 px-12 rounded-full text-lg font-black uppercase tracking-widest shadow-2xl transition-transform active:scale-95"
+            >
+              Request a Quote
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* --- SERVICES GRID (TIGHT SPACING) --- */}
+      <section className="w-full py-12 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">
+              Our Expertise
+            </h2>
+            <div className="w-20 h-2 bg-blue-600 mx-auto mt-2 rounded-full"></div>
           </div>
-        </div>
-      </div>
 
-      {/* Services Grid */}
-      <div
-        id="services-grid"
-        className="container mx-auto px-4 sm:px-6 lg:px-8 py-16"
-      >
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Our Services
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            From residential to industrial, we offer comprehensive cleaning
-            solutions for every need.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <div
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((service) => (
+              <motion.div
                 key={service.id}
-                className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-2"
-                onClick={() =>
-                  navigate(`/services/cleaning#service-${service.id}`)
-                }
+                whileHover={{ y: -10 }}
+                className="group flex flex-col bg-card rounded-[2.5rem] overflow-hidden border border-border shadow-lg transition-all duration-500"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="aspect-video w-full overflow-hidden relative">
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm w-14 h-14 rounded-full flex items-center justify-center mb-2">
-                      <Icon className="w-7 h-7 text-blue-600" />
-                    </div>
+                  <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
+                    <service.icon className="w-6 h-6 text-blue-600" />
                   </div>
                 </div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <div className="p-8 flex flex-col flex-grow">
+                  <h3 className="text-2xl font-black mb-3 uppercase tracking-tight italic group-hover:text-blue-600 transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-8 flex-grow">
                     {service.description}
                   </p>
-                  <div className="space-y-2">
-                    {service.features.slice(0, 3).map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          {feature}
+                  <Button
+                    variant="outline"
+                    onClick={() => setSelectedService(service)}
+                    className="w-full border-blue-600/30 text-blue-600 font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white py-6 rounded-2xl transition-all"
+                  >
+                    Details <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- CONTACT & FOOTER GROUPED (ADAPTIVE DARK) --- */}
+      <div className="w-full bg-muted/30 border-t border-border mt-8">
+        <div id="contact" className="py-12 px-4">
+          <div className="max-w-5xl mx-auto bg-card p-8 md:p-12 rounded-[3rem] border border-border shadow-xl">
+            <Contact />
+          </div>
+        </div>
+
+        <footer className="pb-10 pt-0 px-4 text-center">
+          <div className="max-w-5xl mx-auto border-t border-border pt-8">
+            <p className="text-muted-foreground text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
+              &copy; {new Date().getFullYear()} Albert International Uganda
+              Limited
+            </p>
+          </div>
+        </footer>
+      </div>
+
+      {/* --- THEME-AWARE MODAL --- */}
+      <AnimatePresence>
+        {selectedService && (
+          <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-md">
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              className="bg-card w-full max-w-2xl h-[90vh] sm:h-auto sm:max-h-[85vh] rounded-t-[3rem] sm:rounded-[3rem] overflow-hidden flex flex-col border border-border shadow-2xl"
+            >
+              <div className="flex justify-between items-center p-6 border-b border-border bg-card sticky top-0 z-10">
+                <h2 className="text-xl font-black uppercase italic tracking-tight">
+                  {selectedService.title}
+                </h2>
+                <button
+                  onClick={() => setSelectedService(null)}
+                  className="p-2 bg-muted rounded-full hover:bg-red-500/10 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="overflow-y-auto">
+                <img
+                  src={selectedService.image}
+                  className="w-full h-64 object-cover"
+                  alt=""
+                />
+                <div className="p-8">
+                  <p className="text-muted-foreground mb-8 text-lg font-medium">
+                    {selectedService.description}
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
+                    {selectedService.features.map((f: string, i: number) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 p-4 bg-muted/50 rounded-2xl border border-border"
+                      >
+                        <CheckCircle2 className="text-blue-600 w-5 h-5" />
+                        <span className="text-sm font-bold uppercase tracking-wide">
+                          {f}
                         </span>
                       </div>
                     ))}
                   </div>
-                  <button className="mt-4 text-blue-600 dark:text-blue-400 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                    Learn More <ArrowRight className="w-4 h-4" />
-                  </button>
+                  <Button
+                    onClick={() => {
+                      setSelectedService(null);
+                      scrollToContact();
+                    }}
+                    className="w-full h-16 bg-blue-600 rounded-2xl text-lg font-black uppercase tracking-widest"
+                  >
+                    Book Service
+                  </Button>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ...Rest of the page (CTA, Modals, Footer) remains the same... */}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -3,39 +3,37 @@ import { Button } from "@/components/ui/button";
 import HeroBackground from "@/components/HeroBackground";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
-import ScrollAnimation from "@/components/ScrollAnimation";
+import { useEffect, useRef } from "react";
 import Contact from "@/components/Contact";
-import Navbar from "@/components/Navbar"; // Make sure to import your Navbar
+import Navbar from "@/components/Navbar";
 
 const features = [
   {
     title: "Premium Hand Wash",
     description:
-      "Gentle exterior cleaning using pH-neutral shampoos and microfiber mitts to prevent swirl marks.",
-    icon: <Droplets className="w-6 h-6 text-primary" />,
+      "Gentle exterior cleaning using pH-neutral shampoos and microfiber mitts.",
+    icon: Droplets,
   },
   {
     title: "Interior Detailing",
     description:
       "Deep vacuuming, steam cleaning, and leather conditioning for a factory-fresh feel.",
-    icon: <Car className="w-6 h-6 text-primary" />,
+    icon: Car,
   },
   {
     title: "Paint Protection",
     description:
-      "High-grade wax and ceramic coating applications to keep your vehicle shining longer.",
-    icon: <ShieldCheck className="w-6 h-6 text-primary" />,
+      "High-grade wax and ceramic coating applications to keep your vehicle shining.",
+    icon: ShieldCheck,
   },
   {
     title: "Express Service",
     description:
       "Efficient cleaning protocols designed to get you back on the road in under 45 minutes.",
-    icon: <Clock className="w-6 h-6 text-primary" />,
+    icon: Clock,
   },
 ];
 
-// Animation
 const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
@@ -50,223 +48,166 @@ const fadeUpVariants: Variants = {
 };
 
 const WashingBay = () => {
-  const [, setIsDark] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Detect system theme
+  // Auto-detect and sync system theme
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    setIsDark(mq.matches);
-    document.documentElement.classList.toggle("dark", mq.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsDark(e.matches);
-      document.documentElement.classList.toggle("dark", e.matches);
+    const applyTheme = (isDark: boolean) => {
+      document.documentElement.classList.toggle("dark", isDark);
     };
 
-    mq.addEventListener("change", handleChange);
-    return () => mq.removeEventListener("change", handleChange);
+    applyTheme(mq.matches);
+    mq.addEventListener("change", (e) => applyTheme(e.matches));
+    return () => mq.removeEventListener("change", (e) => applyTheme(e.matches));
   }, []);
 
-  // Parallax (hero section only)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (videoRef.current) {
-        const heroHeight = videoRef.current.parentElement?.offsetHeight || 0;
-        const scrollY = window.scrollY;
-        if (scrollY < heroHeight) {
-          const offset = scrollY * 0.3;
-          videoRef.current.style.transform = `translateY(${offset}px)`;
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  function scrollToSection(sectionId: string): void {
-    if (typeof window === "undefined") return;
-    if (!sectionId) return;
-
-    // quick aliases
-    if (sectionId === "top" || sectionId === "home" || sectionId === "hero") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-
-    const el =
-      document.getElementById(sectionId) ||
-      document.querySelector<HTMLElement>(`[data-section="${sectionId}"]`) ||
-      document.querySelector<HTMLElement>(`a[name="${sectionId}"]`);
-
-    if (!el) {
-      // fallback: scroll to top if target not found
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-
-    // try to account for a fixed navbar if present
-    const nav = document.querySelector<HTMLElement>(
-      "nav, .navbar, [role='navigation']"
-    );
-    const offset = nav ? nav.getBoundingClientRect().height : 0;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset - 12; // small padding
-
-    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-  }
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <>
-      <div className="min-h-screen bg-background text-white overflow-x-hidden">
-        {/* HERO SECTION */}
-        <section className="relative min-h-[80vh] flex flex-col items-center justify-center overflow-hidden">
-          {/* Background Video */}
-          <HeroBackground
-            {...({ videoRef, videoSrc: "/videos/washingbay.mp4" } as any)}
-            className="absolute inset-0 w-full h-full object-cover z-0"
-          />
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden selection:bg-primary selection:text-white">
+      <Navbar />
 
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/50 z-10"></div>
+      {/* --- HERO SECTION --- */}
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
+        <HeroBackground
+          {...({
+            videoRef,
+            videoSrc: "https://www.pexels.com/download/video/6873151/",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any)}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
+        <div className="absolute inset-0 bg-black/60 z-10 backdrop-blur-[2px]"></div>
 
-          {/* Navbar on top of video */}
-          <div className="absolute top-0 left-0 right-0 z-20">
-            <Navbar />
-            {/* Pass transparent prop to make it sit over video */}
-          </div>
-
-          {/* Hero Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative z-20 text-center px-4 max-w-4xl mx-auto mt-24"
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-20 text-center px-4 max-w-4xl mx-auto"
+        >
+          <span className="inline-block py-1 px-3 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold tracking-widest uppercase mb-4">
+            Uganda's Premier Detailers
+          </span>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 text-white leading-tight uppercase italic tracking-tighter">
+            Elite <span className="text-primary">Washing</span> Bay
+          </h1>
+          <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Combining advanced pressure technology with meticulous
+            hand-finishing to preserve your vehicle's value.
+          </p>
+          <Button
+            size="lg"
+            className="text-lg px-10 py-8 rounded-full shadow-2xl hover:scale-105 transition-transform"
+            onClick={scrollToContact}
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Professional Washing Bay
-            </h1>
-            <p className="text-lg text-white/90 mb-8">
-              Premium vehicle care combining advanced pressure washing with
-              meticulous hand-finishing. We don't just wash — we preserve your
-              investment.
-            </p>
-            <div className="flex justify-center flex-wrap gap-4">
-              <Button
-                size="lg"
-                className="text-lg px-8 py-6"
-                onClick={() => scrollToSection("contact")}
-              >
-                Book Wash
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full hover:scale-105"
-              >
-                View Pricing
-              </Button>
-            </div>
-          </motion.div>
-        </section>
+            Book Your Wash Now
+          </Button>
+        </motion.div>
+      </section>
 
-        {/* FEATURE GRID */}
-        <section className="container mx-auto px-4 py-12 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                custom={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUpVariants}
-                whileHover={{
-                  scale: 1.05,
-                  y: -5,
-                  boxShadow: "0 15px 25px rgba(0,0,0,0.3)",
-                }}
-                className="p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm transition-all"
-              >
-                <div className="mb-4 p-3 bg-primary/10 rounded-xl w-fit">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold">{feature.title}</h3>
-                <p className="text-white/90 text-sm mt-2">
-                  {feature.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* CONTENT SECTION */}
-        <section className="container mx-auto px-4 py-16 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="bg-accent/30 rounded-3xl p-8 md:p-12"
-          >
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl font-bold mb-6">
-                  Why Choose AIU Washing Bay?
-                </h2>
-                <ul className="space-y-4">
-                  {[
-                    "Eco-friendly water reclamation system",
-                    "Biodegradable premium cleaning agents",
-                    "Specialized care for luxury and sports cars",
-                    "Comfortable waiting lounge with Wi-Fi",
-                  ].map((item, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.15, duration: 0.5 }}
-                      className="flex items-center gap-3"
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-primary" />
-                      <span>{item}</span>
-                    </motion.li>
-                  ))}
-                </ul>
+      {/* --- FEATURE GRID: Adaptive Dark Mode --- */}
+      <section className="container mx-auto px-4 relative z-30 -mt-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              custom={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUpVariants}
+              className="group p-8 rounded-[2rem] border border-border bg-card hover:bg-accent/50 transition-all duration-500 flex flex-col items-start shadow-xl dark:shadow-none"
+            >
+              <div className="mb-6 p-4 bg-primary/10 text-primary rounded-2xl group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                <feature.icon className="w-6 h-6" />
               </div>
+              <h3 className="text-xl font-bold mb-3 uppercase tracking-tight italic">
+                {feature.title}
+              </h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {feature.description}
+              </p>
+              <div className="mt-6 w-12 h-1 bg-primary/20 group-hover:w-full group-hover:bg-primary transition-all duration-500 rounded-full" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative"
-              >
-                <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl border border-primary/10 flex items-center justify-center hover:scale-105 transition-transform">
-                  <Car className="w-24 h-24 text-primary/40" />
-                </div>
-              </motion.div>
+      {/* --- WHY CHOOSE US: High Contrast Card --- */}
+      <section className="container mx-auto px-4 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-card border border-border rounded-[3rem] p-8 md:p-16 shadow-2xl dark:shadow-none relative overflow-hidden"
+        >
+          {/* Subtle Background Accent for Dark Mode */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32" />
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+              <h2 className="text-3xl md:text-5xl font-black mb-8 leading-tight uppercase italic tracking-tighter">
+                Why Choose{" "}
+                <span className="text-primary">Albert International</span>?
+              </h2>
+
+              <div className="space-y-4">
+                {[
+                  "Eco-friendly water reclamation system",
+                  "Biodegradable premium cleaning agents",
+                  "Specialized care for luxury and sports cars",
+                  "Comfortable waiting lounge with Wi-Fi",
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-4 p-4 rounded-2xl bg-muted/50 border border-border hover:border-primary/50 transition-colors group"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
+                      <CheckCircle2 className="w-5 h-5 text-primary group-hover:text-white" />
+                    </div>
+                    <span className="font-bold text-sm uppercase tracking-widest opacity-80">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </motion.div>
-        </section>
 
-        <ScrollAnimation animation="fade-left" delay={200}>
-          <div className="rounded-lg border bg-card p-8">
-            {/* Controlled contact form that posts to a configurable Formspree endpoint.
-                                Configure the endpoint using VITE_FORMSPREE_ENDPOINT or
-                                VITE_FORMSPREE_FORM_ID in a .env file (see .env.example).
-                            */}
-            <Contact />
+            <div className="relative aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-border">
+              <img
+                src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80"
+                alt="Premium Detailing"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md px-4 py-2 rounded-full border border-border">
+                <p className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  Certified Detailers
+                </p>
+              </div>
+            </div>
           </div>
-        </ScrollAnimation>
-      </div>
+        </motion.div>
+      </section>
 
-      <div className="pt-8 border-t text-center text-sm text-muted-foreground">
-        <p>
-          &copy; {new Date().getFullYear()} Albert International Uganda Limited.
-          All rights reserved.
-        </p>
-      </div>
-      <br />
-      <br />
-    </>
+      {/* --- CONTACT SECTION --- */}
+      <section id="contact" className="container mx-auto px-4 pb-16">
+        <div className="bg-card border border-border rounded-[3rem] p-8 md:p-12 shadow-inner">
+          <Contact />
+        </div>
+      </section>
+
+      <footer className="py-12 border-t border-border bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-muted-foreground">
+            &copy; {new Date().getFullYear()} Albert International Uganda
+            Limited
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 };
 
