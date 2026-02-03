@@ -74,7 +74,10 @@ const WashingBay = () => {
       {/* --- HERO SECTION --- */}
       <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
         <HeroBackground
-          {...({ videoRef, videoSrc: "/videos/washingbay.mp4" } as any)}
+          {...({
+            videoRef,
+            videoSrc: "https://www.pexels.com/download/video/6873151/",
+          } as any)}
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         <div className="absolute inset-0 bg-black/60 z-10 backdrop-blur-[2px]"></div>

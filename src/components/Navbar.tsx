@@ -71,15 +71,14 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ease-in-out",
         isScrolled
-          ? "mx-0 md:mx-8 mt-0 md:mt-6 md:rounded-[2rem] border-b md:border border-white/20 dark:border-white/10 shadow-2xl shadow-blue-900/10"
+          ? "mx-0 md:mx-8 mt-0 md:mt-6 md:rounded-[2rem] border-b md:border border-white/20 shadow-2xl"
           : "bg-transparent border-transparent",
       )}
       style={{
-        // The core Glassmorphism properties
         backgroundColor: isScrolled
           ? isDark
             ? "rgba(15, 23, 42, 0.65)"
-            : "rgba(255, 255, 255, 0.75)"
+            : "rgba(15, 23, 42, 0.45)" // Darker base for white text visibility
           : "transparent",
         backdropFilter: isScrolled ? "blur(24px) saturate(180%)" : "none",
         WebkitBackdropFilter: isScrolled ? "blur(24px) saturate(180%)" : "none",
@@ -87,7 +86,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16 md:h-22">
-          {/* Logo with Glow */}
+          {/* Logo */}
           <button
             onClick={() => scrollTo("home")}
             className="flex items-center gap-3 group"
@@ -96,16 +95,15 @@ const Navbar = () => {
               <img
                 src="/AIU_favicon.png"
                 alt="Logo"
-                className="h-10 w-10 md:h-12 md:w-12 rounded-2xl transition-transform group-hover:scale-110 duration-500 shadow-lg"
+                className="h-10 w-10 md:h-12 md:w-12 rounded-2xl shadow-lg"
               />
-              <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <span className="text-2xl font-black italic tracking-tighter uppercase bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-black italic tracking-tighter uppercase bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">
               OIL
             </span>
           </button>
 
-          {/* Desktop Links */}
+          {/* Desktop Links - Now all forced to White */}
           <div className="hidden lg:flex items-center space-x-2">
             <NavButton onClick={() => scrollTo("home")}>Home</NavButton>
 
@@ -116,8 +114,8 @@ const Navbar = () => {
             >
               <button
                 className={cn(
-                  "flex items-center gap-1.5 px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all rounded-full hover:bg-white/10",
-                  isDropdownOpen ? "text-blue-600" : "text-foreground/80",
+                  "flex items-center gap-1.5 px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all rounded-full hover:bg-white/10 text-white",
+                  isDropdownOpen ? "text-blue-400" : "text-white",
                 )}
               >
                 Services{" "}
@@ -129,22 +127,15 @@ const Navbar = () => {
                 />
               </button>
 
+              {/* Dropdown Card */}
               {isDropdownOpen && (
-                <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 p-2 border border-white/20 rounded-[2.5rem] shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300"
-                  style={{
-                    backgroundColor: isDark
-                      ? "rgba(30, 41, 59, 0.9)"
-                      : "rgba(255, 255, 255, 0.9)",
-                    backdropFilter: "blur(32px)",
-                  }}
-                >
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 p-2 border border-white/10 rounded-[2.5rem] shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300 bg-slate-900/90 backdrop-blur-xl">
                   <div className="grid grid-cols-1 gap-1">
                     {services.map((s) => (
                       <Link
                         key={s.id}
                         to={s.path}
-                        className="flex items-center justify-between px-6 py-4 rounded-[1.5rem] hover:bg-blue-600 hover:text-white transition-all group font-bold text-sm"
+                        className="flex items-center justify-between px-6 py-4 rounded-[1.5rem] hover:bg-blue-600 text-white transition-all group font-bold text-sm"
                       >
                         {s.label}{" "}
                         <ChevronRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
@@ -160,9 +151,10 @@ const Navbar = () => {
 
             <div className="h-6 w-px bg-white/20 mx-4" />
 
+            {/* Theme Toggle Button stays white */}
             <button
               onClick={toggleTheme}
-              className="p-3 rounded-full hover:bg-white/10 text-muted-foreground hover:text-foreground transition-colors"
+              className="p-3 rounded-full hover:bg-white/10 text-white transition-colors"
             >
               {isDark ? (
                 <Sun className="w-5 h-5" />
@@ -179,9 +171,9 @@ const Navbar = () => {
             </Button>
           </div>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Toggle - Now White */}
           <div className="lg:hidden flex items-center gap-3">
-            <button onClick={toggleTheme} className="p-2 text-muted-foreground">
+            <button onClick={toggleTheme} className="p-2 text-white">
               {isDark ? (
                 <Sun className="w-5 h-5" />
               ) : (
@@ -190,7 +182,7 @@ const Navbar = () => {
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-3 bg-blue-600/10 rounded-2xl text-blue-600"
+              className="p-3 bg-white/10 rounded-2xl text-white"
             >
               {isMobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -205,6 +197,7 @@ const Navbar = () => {
   );
 };
 
+// Internal Sub-component for Nav Buttons forced to White
 const NavButton = ({
   children,
   onClick,
@@ -214,7 +207,7 @@ const NavButton = ({
 }) => (
   <button
     onClick={onClick}
-    className="px-5 py-2.5 text-xs font-black uppercase tracking-widest text-foreground/80 hover:text-blue-600 hover:bg-white/10 transition-all rounded-full"
+    className="px-5 py-2.5 text-xs font-black uppercase tracking-widest text-white hover:text-blue-400 hover:bg-white/10 transition-all rounded-full"
   >
     {children}
   </button>
