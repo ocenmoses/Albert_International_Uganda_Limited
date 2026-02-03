@@ -4,4 +4,3 @@
 
 [build.environment]
   NPM_CONFIG_PRODUCTION = "false"
-  NODE_VERSION = "20"
