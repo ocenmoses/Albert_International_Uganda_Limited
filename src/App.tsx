@@ -60,10 +60,11 @@ function Home() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
-              Olwit Ejang International Limited
+            <h1 className="text-5xl sm:text-7xl font-black text-white leading-tight mb-6 uppercase italic tracking-tighter">
+              Olwit EJang <span className="text-blue-400">International</span>{" "}
+              Limited
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
               A trusted professional multi-service group of companies providing
               high quality, standard, fast and reliable servises
             </p>
