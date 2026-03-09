@@ -1,15 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Home,
-  Building2,
-  Brush,
-  Sparkles,
-  Sofa,
-  Factory,
-  ArrowRight,
-  X,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowRight, X, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Contact from "@/components/Contact";
@@ -18,96 +8,95 @@ import Navbar from "@/components/Navbar";
 const services = [
   {
     id: 1,
-    icon: Home,
-    title: "Residential Cleaning",
+    title: "Ice Cream Production",
     description:
-      "Keep your home spotless with our comprehensive residential cleaning services.",
+      "High-quality ice cream manufacturing with various flavors, using premium ingredients and modern processing for retail and wholesale in Uganda.",
     features: [
-      "General house cleaning",
-      "Bathrooms & toilets",
-      "Kitchens & appliances",
-      "Window cleaning",
+      "Creamy & exotic flavors",
+      "Bulk & packaged options",
+      "Hygiene & quality control",
+      "Custom branding available",
     ],
     image:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+      "https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?w=800&q=80", // factory/processing style fallback; ice cream related
   },
   {
     id: 2,
-    icon: Building2,
-    title: "Office & Commercial",
+    title: "Chalk Manufacturing",
     description:
-      "Professional cleaning solutions for your business environment.",
+      "Durable, dust-free chalk sticks for schools, offices, and educational use — produced with safe, non-toxic materials.",
     features: [
-      "Office spaces",
-      "Conference rooms",
-      "Floor sanitizing",
-      "Waste management",
+      "White & colored varieties",
+      "Standard & jumbo sizes",
+      "Low-dust formula",
+      "Bulk supply for institutions",
     ],
     image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "https://images.pexels.com/photos/1595108/pexels-photo-1595108.jpeg?w=800&q=80", // industrial production line
   },
   {
     id: 3,
-    icon: Brush,
-    title: "Post-Construction",
+    title: "Bathing & Laundry Soap Production",
     description:
-      "Transform your newly built space into a pristine environment.",
+      "Premium bathing soap and laundry bar soap made with natural oils, effective cleaning, and long-lasting quality.",
     features: [
-      "Removal of cement dust",
-      "Glass cleaning",
-      "Paint removal",
-      "Final handover",
+      "Moisturizing bathing bars",
+      "High-foam laundry soap",
+      "Antibacterial options",
+      "Eco-friendly packaging",
     ],
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+      "https://images.pexels.com/photos/29764115/pexels-photo-29764115.jpeg?w=800&q=80", // soap production factory
   },
   {
     id: 4,
-    icon: Sparkles,
-    title: "Deep Cleaning",
+    title: "Toilet Paper Manufacturing",
     description:
-      "Intensive cleaning that reaches every corner of your property.",
+      "Soft, absorbent, and strong toilet paper rolls produced in various ply options for households and commercial use.",
     features: [
-      "Kitchen deep scrub",
-      "Bathroom scaling",
-      "Ceiling cleaning",
-      "Mattress cleaning",
+      "2-ply & 3-ply varieties",
+      "Jumbo & standard rolls",
+      "Septic-safe & biodegradable",
+      "Custom embossing available",
     ],
     image:
-      "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&q=80",
+      "https://images.pexels.com/photos/11515346/pexels-photo-11515346.jpeg?w=800&q=80", // toilet paper production line
   },
   {
     id: 5,
-    icon: Sofa,
-    title: "Carpet & Upholstery",
+    title: "Body Lotion & Jelly Production",
     description:
-      "Revitalize your carpets and furniture with specialized cleaning.",
+      "Nourishing body lotions and petroleum jelly formulated for daily skin care, hydration, and protection.",
     features: [
-      "Carpet shampooing",
-      "Stain removal",
-      "Sofa cleaning",
-      "Fabric protection",
+      "Vitamin-enriched lotions",
+      "Pure petroleum jelly",
+      "Fragranced & unscented",
+      "Large & retail packaging",
     ],
     image:
-      "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&q=80",
+      "https://images.pexels.com/photos/264547/pexels-photo-264547.jpeg?w=800&q=80", // cosmetics/production style
   },
   {
     id: 6,
-    icon: Factory,
-    title: "Industrial Cleaning",
-    description: "Heavy-duty cleaning solutions for industrial facilities.",
-    features: ["Warehouses", "Factories", "Machinery cleaning", "Degreasing"],
+    title: "Detergent Powder Production",
+    description:
+      "Powerful laundry detergent powder for effective stain removal, brightening, and fabric care in hard water conditions.",
+    features: [
+      "High-suds formula",
+      "Color-safe & enzyme-based",
+      "Economical bulk packs",
+      "Suitable for machine & hand wash",
+    ],
     image:
-      "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80",
+      "https://images.pexels.com/photos/707046/pexels-photo-707046.jpeg?w=800&q=80", // industrial mixing/production
   },
 ];
 
-export default function CleaningPage() {
+export default function ManufacturingPage() {
   const [selectedService, setSelectedService] = useState<
     null | (typeof services)[0]
   >(null);
 
-  // Sync with system theme and handle modal overflow
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const applyTheme = (isDark: boolean) =>
@@ -141,7 +130,6 @@ export default function CleaningPage() {
           />
           <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[2px]" />
         </div>
-
         <div className="container mx-auto relative z-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -149,11 +137,13 @@ export default function CleaningPage() {
             className="max-w-4xl mx-auto text-center"
           >
             <h1 className="text-5xl sm:text-7xl font-black text-white leading-tight mb-6 uppercase italic tracking-tighter">
-              Elite <span className="text-blue-400">Cleaning</span> Solutions
+              Elite <span className="text-blue-400">Manufacturing</span>{" "}
+              Solutions
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
-              Premium sanitization for Ugandan homes and industries. We don't
-              just clean; we restore health and clarity to your space.
+              Quality production of everyday essentials — ice cream, soaps,
+              toilet paper, lotions, and more — made in Uganda with care and
+              reliability.
             </p>
             <Button
               onClick={scrollToContact}
@@ -165,16 +155,15 @@ export default function CleaningPage() {
         </div>
       </section>
 
-      {/* --- SERVICES GRID (TIGHT SPACING) --- */}
+      {/* --- SERVICES GRID (NO ICONS) --- */}
       <section className="w-full py-12 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">
-              Our Expertise
+              Our Products & Expertise
             </h2>
             <div className="w-20 h-2 bg-blue-600 mx-auto mt-2 rounded-full"></div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service) => (
               <motion.div
@@ -188,11 +177,8 @@ export default function CleaningPage() {
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
-                    <service.icon className="w-6 h-6 text-blue-600" />
-                  </div>
+                  {/* No icon div here */}
                 </div>
-
                 <div className="p-8 flex flex-col flex-grow">
                   <h3 className="text-2xl font-black mb-3 uppercase tracking-tight italic group-hover:text-blue-600 transition-colors">
                     {service.title}
@@ -214,14 +200,13 @@ export default function CleaningPage() {
         </div>
       </section>
 
-      {/* --- CONTACT & FOOTER GROUPED (ADAPTIVE DARK) --- */}
+      {/* --- CONTACT & FOOTER --- */}
       <div className="w-full bg-muted/30 border-t border-border mt-8">
         <div id="contact" className="py-12 px-4">
           <div className="max-w-5xl mx-auto bg-card p-8 md:p-12 rounded-[3rem] border border-border shadow-xl">
             <Contact />
           </div>
         </div>
-
         <footer className="pb-10 pt-0 px-4 text-center">
           <div className="max-w-5xl mx-auto border-t border-border pt-8">
             <p className="text-muted-foreground text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
@@ -232,7 +217,7 @@ export default function CleaningPage() {
         </footer>
       </div>
 
-      {/* --- THEME-AWARE MODAL --- */}
+      {/* --- MODAL (keeps CheckCircle2 & X) --- */}
       <AnimatePresence>
         {selectedService && (
           <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-md">
@@ -253,7 +238,6 @@ export default function CleaningPage() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-
               <div className="overflow-y-auto">
                 <img
                   src={selectedService.image}
@@ -284,7 +268,7 @@ export default function CleaningPage() {
                     }}
                     className="w-full h-16 bg-blue-600 rounded-2xl text-lg font-black uppercase tracking-widest"
                   >
-                    Book Service
+                    Request Quote
                   </Button>
                 </div>
               </div>

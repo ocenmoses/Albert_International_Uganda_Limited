@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import {
-  Home,
-  Building2,
-  Brush,
-  Sparkles,
-  Sofa,
-  Factory,
+  Construction,
+  HardHat,
+  Pipette,
+  Shovel,
+  Zap,
+  Wrench,
+  Store, // Valid Lucide icon (shop/supermarket)
+  Droplet,
   ArrowRight,
   X,
   CheckCircle2,
@@ -18,96 +20,131 @@ import Navbar from "@/components/Navbar";
 const services = [
   {
     id: 1,
-    icon: Home,
-    title: "Residential Cleaning",
+    icon: Construction,
+    title: "Petrol Station Construction",
     description:
-      "Keep your home spotless with our comprehensive residential cleaning services.",
+      "Complete turnkey construction of modern fuel stations, including site preparation, civil works, and infrastructure setup in Uganda.",
     features: [
-      "General house cleaning",
-      "Bathrooms & toilets",
-      "Kitchens & appliances",
-      "Window cleaning",
+      "Site layout & civil engineering",
+      "Canopy & building erection",
+      "Drainage & paving",
+      "Compliance with UNBS & safety regs",
     ],
     image:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+      "https://images.pexels.com/photos/221506/pexels-photo-221506.jpeg?w=800&q=80",
   },
   {
     id: 2,
-    icon: Building2,
-    title: "Office & Commercial",
+    icon: HardHat,
+    title: "Survey & Site Assessment",
     description:
-      "Professional cleaning solutions for your business environment.",
+      "Professional land survey, environmental impact assessment, and regulatory approvals for new or upgraded petrol stations.",
     features: [
-      "Office spaces",
-      "Conference rooms",
-      "Floor sanitizing",
-      "Waste management",
+      "Topographical & geotechnical survey",
+      "EIA & NEMA approvals",
+      "Fuel demand forecasting",
+      "Zoning & permit handling",
     ],
     image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "https://images.pexels.com/photos/1595108/pexels-photo-1595108.jpeg?w=800&q=80",
   },
   {
     id: 3,
-    icon: Brush,
-    title: "Post-Construction",
+    icon: Pipette,
+    title: "Piping & Tank Installation",
     description:
-      "Transform your newly built space into a pristine environment.",
+      "Expert installation of underground/aboveground storage tanks, fuel piping systems, and leak detection infrastructure.",
     features: [
-      "Removal of cement dust",
-      "Glass cleaning",
-      "Paint removal",
-      "Final handover",
+      "Double-wall tank installation",
+      "Pressure piping & fittings",
+      "Interstitial monitoring",
+      "Corrosion protection",
     ],
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+      "https://images.pexels.com/photos/258447/pexels-photo-258447.jpeg?w=800&q=80",
   },
   {
     id: 4,
-    icon: Sparkles,
-    title: "Deep Cleaning",
+    icon: Shovel,
+    title: "Excavation & Tank Digging",
     description:
-      "Intensive cleaning that reaches every corner of your property.",
+      "Safe and precise excavation for fuel storage tanks, including backfilling, compaction, and site reinstatement.",
     features: [
-      "Kitchen deep scrub",
-      "Bathroom scaling",
-      "Ceiling cleaning",
-      "Mattress cleaning",
+      "Deep excavation for USTs",
+      "Soil testing & stabilization",
+      "Dewatering if needed",
+      "Environmental safeguards",
     ],
     image:
-      "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&q=80",
+      "https://images.pexels.com/photos/221506/pexels-photo-221506.jpeg?w=800&q=80",
   },
   {
     id: 5,
-    icon: Sofa,
-    title: "Carpet & Upholstery",
+    icon: Zap,
+    title: "Generators & Power Systems",
     description:
-      "Revitalize your carpets and furniture with specialized cleaning.",
+      "Supply and installation of backup generators, electrical systems, and lighting for reliable 24/7 station operation.",
     features: [
-      "Carpet shampooing",
-      "Stain removal",
-      "Sofa cleaning",
-      "Fabric protection",
+      "Diesel generator sets",
+      "ATS & electrical panels",
+      "LED forecourt lighting",
+      "Solar hybrid options",
     ],
     image:
-      "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&q=80",
+      "https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg?w=800&q=80",
   },
   {
     id: 6,
-    icon: Factory,
-    title: "Industrial Cleaning",
-    description: "Heavy-duty cleaning solutions for industrial facilities.",
-    features: ["Warehouses", "Factories", "Machinery cleaning", "Degreasing"],
+    icon: Wrench,
+    title: "Service Bay & Equipment",
+    description:
+      "Installation of service bay tools, lifts, air compressors, and maintenance equipment for vehicle servicing at stations.",
+    features: [
+      "Two-post & four-post lifts",
+      "Air & oil dispensers",
+      "Diagnostic tools",
+      "Used oil collection systems",
+    ],
     image:
-      "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80",
+      "https://images.pexels.com/photos/707046/pexels-photo-707046.jpeg?w=800&q=80",
+  },
+  {
+    id: 7,
+    icon: Store,
+    title: "Convenience Store & Supermarket Setup",
+    description:
+      "Design and equipping of on-site shops, mini-supermarkets, food courts, and retail spaces to boost non-fuel revenue.",
+    features: [
+      "Shelving & POS systems",
+      "Refrigeration & food display",
+      "Branded shop interiors",
+      "Inventory management",
+    ],
+    image:
+      "https://images.pexels.com/photos/264547/pexels-photo-264547.jpeg?w=800&q=80",
+  },
+  {
+    id: 8,
+    icon: Droplet,
+    title: "Washing Bay & Car Care Equipment",
+    description:
+      "Supply and installation of car wash bays, high-pressure washers, vacuums, and detailing equipment for added services.",
+    features: [
+      "Automatic & manual wash systems",
+      "Vacuum stations",
+      "Water recycling systems",
+      "Polish & detailing tools",
+    ],
+    image:
+      "https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?w=800&q=80",
   },
 ];
 
-export default function CleaningPage() {
+export default function PetroleumPage() {
   const [selectedService, setSelectedService] = useState<
     null | (typeof services)[0]
   >(null);
 
-  // Sync with system theme and handle modal overflow
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const applyTheme = (isDark: boolean) =>
@@ -131,7 +168,6 @@ export default function CleaningPage() {
     <div className="min-h-screen bg-background text-foreground w-full overflow-x-hidden">
       <Navbar />
 
-      {/* --- CINEMATIC HERO --- */}
       <section className="relative w-full min-h-[85vh] flex items-center pt-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -141,7 +177,6 @@ export default function CleaningPage() {
           />
           <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[2px]" />
         </div>
-
         <div className="container mx-auto relative z-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -149,11 +184,12 @@ export default function CleaningPage() {
             className="max-w-4xl mx-auto text-center"
           >
             <h1 className="text-5xl sm:text-7xl font-black text-white leading-tight mb-6 uppercase italic tracking-tighter">
-              Elite <span className="text-blue-400">Cleaning</span> Solutions
+              Elite <span className="text-blue-400">Petroleum</span> Solutions
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
-              Premium sanitization for Ugandan homes and industries. We don't
-              just clean; we restore health and clarity to your space.
+              Comprehensive petrol station construction, equipment supply,
+              installation, and operational services across Uganda. From site
+              survey to full setup — we build safe, profitable fuel stations.
             </p>
             <Button
               onClick={scrollToContact}
@@ -165,7 +201,6 @@ export default function CleaningPage() {
         </div>
       </section>
 
-      {/* --- SERVICES GRID (TIGHT SPACING) --- */}
       <section className="w-full py-12 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-10">
@@ -174,7 +209,6 @@ export default function CleaningPage() {
             </h2>
             <div className="w-20 h-2 bg-blue-600 mx-auto mt-2 rounded-full"></div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service) => (
               <motion.div
@@ -188,11 +222,10 @@ export default function CleaningPage() {
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
+                  {/* <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
                     <service.icon className="w-6 h-6 text-blue-600" />
-                  </div>
+                  </div> */}
                 </div>
-
                 <div className="p-8 flex flex-col flex-grow">
                   <h3 className="text-2xl font-black mb-3 uppercase tracking-tight italic group-hover:text-blue-600 transition-colors">
                     {service.title}
@@ -214,14 +247,12 @@ export default function CleaningPage() {
         </div>
       </section>
 
-      {/* --- CONTACT & FOOTER GROUPED (ADAPTIVE DARK) --- */}
       <div className="w-full bg-muted/30 border-t border-border mt-8">
         <div id="contact" className="py-12 px-4">
           <div className="max-w-5xl mx-auto bg-card p-8 md:p-12 rounded-[3rem] border border-border shadow-xl">
             <Contact />
           </div>
         </div>
-
         <footer className="pb-10 pt-0 px-4 text-center">
           <div className="max-w-5xl mx-auto border-t border-border pt-8">
             <p className="text-muted-foreground text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
@@ -232,7 +263,6 @@ export default function CleaningPage() {
         </footer>
       </div>
 
-      {/* --- THEME-AWARE MODAL --- */}
       <AnimatePresence>
         {selectedService && (
           <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-md">
@@ -253,7 +283,6 @@ export default function CleaningPage() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-
               <div className="overflow-y-auto">
                 <img
                   src={selectedService.image}
@@ -284,7 +313,7 @@ export default function CleaningPage() {
                     }}
                     className="w-full h-16 bg-blue-600 rounded-2xl text-lg font-black uppercase tracking-widest"
                   >
-                    Book Service
+                    Request Quote
                   </Button>
                 </div>
               </div>

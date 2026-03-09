@@ -24,7 +24,7 @@ const testimonials: Testimonial[] = [
     name: "Odongo Solomon",
     role: "Homeowner",
     content:
-      "Albert International Uganda Limited transformed our home! The team was professional, thorough, and respectful. Our house has never looked better. Highly recommend their services!",
+      "Olwit Ejang International Limited transformed our home! The team was professional, thorough, and respectful. Our house has never looked better. Highly recommend their services!",
     rating: 5,
   },
   {
@@ -32,7 +32,7 @@ const testimonials: Testimonial[] = [
     name: "Olwit Pope",
     role: "Business Owner",
     content:
-      "We've been using Albert International Uganda Limited for our office cleaning for over a year now. They're reliable, efficient, and always go above and beyond. Our workspace is spotless!",
+      "We've been using Olwit Ejang International Limited for our office cleaning for over a year now. They're reliable, efficient, and always go above and beyond. Our workspace is spotless!",
     rating: 5,
   },
   {
@@ -40,7 +40,7 @@ const testimonials: Testimonial[] = [
     name: "Ocen Moses",
     role: "Property Manager",
     content:
-      "Albert International Uganda Limited handles all our rental property turnovers. They're fast, detail-oriented, and always meet our deadlines. Couldn't ask for better service!",
+      "Olwit Ejang International Limited handles all our rental property turnovers. They're fast, detail-oriented, and always meet our deadlines. Couldn't ask for better service!",
     rating: 5,
   },
   {
@@ -56,14 +56,14 @@ const testimonials: Testimonial[] = [
     name: "Oula Darius",
     role: "Event Coordinator",
     content:
-      "Albert International Uganda Limited saved us during our busy event season. They cleaned our venue quickly and professionally, allowing us to focus on our guests. Excellent work!",
+      "Olwit Ejang International Limited saved us during our busy event season. They cleaned our venue quickly and professionally, allowing us to focus on our guests. Excellent work!",
     rating: 5,
   },
 ];
 
 const TestimonialCarousel = () => {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true }),
   );
 
   return (

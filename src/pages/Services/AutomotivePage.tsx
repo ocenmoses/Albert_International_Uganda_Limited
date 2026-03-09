@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  Home,
-  Building2,
-  Brush,
-  Sparkles,
-  Sofa,
-  Factory,
+  Car,
+  Truck,
+  Wrench,
+  Hammer,
+  SprayCan,
+  Sofa, // Note: If CarInterior isn't available, you can use Sofa or Users as fallback
   ArrowRight,
   X,
   CheckCircle2,
@@ -18,91 +18,110 @@ import Navbar from "@/components/Navbar";
 const services = [
   {
     id: 1,
-    icon: Home,
-    title: "Residential Cleaning",
+    icon: Car,
+    title: "Car Import & Export",
     description:
-      "Keep your home spotless with our comprehensive residential cleaning services.",
+      "Seamless import and export of brand new and used vehicles to and from Uganda with full customs clearance support.",
     features: [
-      "General house cleaning",
-      "Bathrooms & toilets",
-      "Kitchens & appliances",
-      "Window cleaning",
+      "Brand new vehicles",
+      "Quality used cars",
+      "Duty & tax handling",
+      "Global sourcing network",
     ],
-    image:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+    image: "https://i.ytimg.com/vi/J9mXIvmjvBE/sddefault.jpg",
   },
   {
     id: 2,
-    icon: Building2,
-    title: "Office & Commercial",
+    icon: Car,
+    title: "Truck & Tanker Sales",
     description:
-      "Professional cleaning solutions for your business environment.",
+      "Wide range of heavy-duty trucks and specialized tanker trucks for commercial and industrial use, both new and used.",
     features: [
-      "Office spaces",
-      "Conference rooms",
-      "Floor sanitizing",
-      "Waste management",
+      "Cargo & flatbed trucks",
+      "Fuel & water tankers",
+      "Tipper & dump trucks",
+      "After-sales support",
     ],
     image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+      "https://trucktanks.com/wp-content/uploads/2016/06/Fuel-Truck-Stock-17658-8.jpg",
   },
   {
     id: 3,
-    icon: Brush,
-    title: "Post-Construction",
+    icon: Wrench,
+    title: "General Spare Parts",
     description:
-      "Transform your newly built space into a pristine environment.",
+      "Comprehensive inventory of genuine and aftermarket spare parts for cars, trucks, and commercial vehicles.",
     features: [
-      "Removal of cement dust",
-      "Glass cleaning",
-      "Paint removal",
-      "Final handover",
+      "Engine & transmission parts",
+      "Brakes & suspension",
+      "Electrical components",
+      "Body & accessories",
     ],
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+      "https://www.ewaldauto.com/blogs/4667/wp-content/uploads/2024/01/Used-car-dealerships-in-wisconsin.jpg",
   },
   {
     id: 4,
-    icon: Sparkles,
-    title: "Deep Cleaning",
+    icon: Wrench,
+    title: "Vehicle Repairs & Maintenance",
     description:
-      "Intensive cleaning that reaches every corner of your property.",
+      "Professional mechanical repairs and routine maintenance services for all vehicle types.",
     features: [
-      "Kitchen deep scrub",
-      "Bathroom scaling",
-      "Ceiling cleaning",
-      "Mattress cleaning",
+      "Engine diagnostics & repair",
+      "Transmission servicing",
+      "Brake & suspension work",
+      "Electrical system fixes",
     ],
     image:
-      "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&q=80",
+      "https://www.thurstontalk.com/wp-content/uploads/2019/11/Boss-Auto-Repair-in-Olympia-Four-Wheel-Drive-Repair.jpg",
   },
   {
     id: 5,
-    icon: Sofa,
-    title: "Carpet & Upholstery",
+    icon: Hammer,
+    title: "Panel Beating & Dent Repair",
     description:
-      "Revitalize your carpets and furniture with specialized cleaning.",
+      "Expert panel beating and dent removal to restore your vehicle's body to factory condition.",
     features: [
-      "Carpet shampooing",
-      "Stain removal",
-      "Sofa cleaning",
-      "Fabric protection",
+      "Accident damage repair",
+      "Dent removal & PDR",
+      "Frame straightening",
+      "Welding & fabrication",
     ],
     image:
-      "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&q=80",
+      "https://cdn.aarp.net/content/dam/aarpe/en/home/auto/car-maintenance-safety/find-mechanic-trust/_jcr_content/root/container_main/container_body_main/container_body1/container_body_cf/container_image/articlecontentfragment/cfimage.coreimg.50.932.jpeg/content/dam/aarp/auto/2023/07/1140-auto-mechanic-bottom-of-car.jpg",
   },
   {
     id: 6,
-    icon: Factory,
-    title: "Industrial Cleaning",
-    description: "Heavy-duty cleaning solutions for industrial facilities.",
-    features: ["Warehouses", "Factories", "Machinery cleaning", "Degreasing"],
+    icon: SprayCan,
+    title: "Color Spraying & Refinishing",
+    description:
+      "Professional automotive painting and color spraying services using high-quality paints and techniques.",
+    features: [
+      "Full vehicle respray",
+      "Panel color matching",
+      "Scratch & chip repair",
+      "Protective coatings",
+    ],
+    image: "https://www.spraysystems.com/wp-content/uploads/Auto-Finisher.jpg",
+  },
+  {
+    id: 7,
+    icon: Sofa, // Using Sofa as placeholder; replace with appropriate icon if available (e.g., Car for vehicle)
+    title: "Car Interior Replacement",
+    description:
+      "Complete interior refurbishment including seat reupholstery, dashboard repair, and custom replacements.",
+    features: [
+      "Leather & fabric seats",
+      "Dashboard & trim renewal",
+      "Carpet & headliner replacement",
+      "Custom interior upgrades",
+    ],
     image:
-      "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80",
+      "https://b2274312.smushcdn.com/2274312/wp-content/uploads/2017/09/Katzkin-Ford-F150-1-1.jpg?lossy=0&strip=1&webp=1",
   },
 ];
 
-export default function CleaningPage() {
+export default function AutomotivePage() {
   const [selectedService, setSelectedService] = useState<
     null | (typeof services)[0]
   >(null);
@@ -141,7 +160,6 @@ export default function CleaningPage() {
           />
           <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[2px]" />
         </div>
-
         <div className="container mx-auto relative z-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -149,11 +167,12 @@ export default function CleaningPage() {
             className="max-w-4xl mx-auto text-center"
           >
             <h1 className="text-5xl sm:text-7xl font-black text-white leading-tight mb-6 uppercase italic tracking-tighter">
-              Elite <span className="text-blue-400">Cleaning</span> Solutions
+              Elite <span className="text-blue-400">Automotive</span> Solutions
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
-              Premium sanitization for Ugandan homes and industries. We don't
-              just clean; we restore health and clarity to your space.
+              Premium vehicle import/export, sales, repairs, and refurbishment
+              services across Uganda. Quality cars, trucks, parts, and expert
+              craftsmanship — we keep you moving.
             </p>
             <Button
               onClick={scrollToContact}
@@ -174,7 +193,6 @@ export default function CleaningPage() {
             </h2>
             <div className="w-20 h-2 bg-blue-600 mx-auto mt-2 rounded-full"></div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service) => (
               <motion.div
@@ -188,11 +206,10 @@ export default function CleaningPage() {
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
+                  {/* <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
                     <service.icon className="w-6 h-6 text-blue-600" />
-                  </div>
+                  </div> */}
                 </div>
-
                 <div className="p-8 flex flex-col flex-grow">
                   <h3 className="text-2xl font-black mb-3 uppercase tracking-tight italic group-hover:text-blue-600 transition-colors">
                     {service.title}
@@ -221,7 +238,6 @@ export default function CleaningPage() {
             <Contact />
           </div>
         </div>
-
         <footer className="pb-10 pt-0 px-4 text-center">
           <div className="max-w-5xl mx-auto border-t border-border pt-8">
             <p className="text-muted-foreground text-[10px] md:text-xs font-black uppercase tracking-[0.4em]">
@@ -253,7 +269,6 @@ export default function CleaningPage() {
                   <X className="w-6 h-6" />
                 </button>
               </div>
-
               <div className="overflow-y-auto">
                 <img
                   src={selectedService.image}

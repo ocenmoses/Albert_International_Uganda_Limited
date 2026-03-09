@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  Home,
-  Building2,
-  Brush,
-  Sparkles,
-  Sofa,
-  Factory,
+  Plane,
+  Ticket,
+  FileText,
+  HeartPulse,
+  GraduationCap,
+  Briefcase,
   ArrowRight,
   X,
   CheckCircle2,
@@ -18,109 +18,115 @@ import Navbar from "@/components/Navbar";
 const services = [
   {
     id: 1,
-    icon: Home,
-    title: "Residential Cleaning",
+    icon: Plane,
+    title: "Aircraft Hiring",
     description:
-      "Keep your home spotless with our comprehensive residential cleaning services.",
+      "Private aircraft charter services for weddings, prom nights, picnics, and executive travel.",
     features: [
-      "General house cleaning",
-      "Bathrooms & toilets",
-      "Kitchens & appliances",
-      "Window cleaning",
+      "Wedding aerial arrivals",
+      "Prom & private events",
+      "Luxury scenic flights",
+      "Corporate charter services",
     ],
     image:
-      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+      "https://images.pexels.com/photos/46148/aircraft-jet-landing-cloud-46148.jpeg",
   },
   {
     id: 2,
-    icon: Building2,
-    title: "Office & Commercial",
+    icon: Ticket,
+    title: "Flight Booking",
     description:
-      "Professional cleaning solutions for your business environment.",
+      "Fast and reliable international and domestic flight booking services.",
     features: [
-      "Office spaces",
-      "Conference rooms",
-      "Floor sanitizing",
-      "Waste management",
+      "International flight booking",
+      "Domestic flight reservations",
+      "Corporate travel planning",
+      "24/7 travel assistance",
     ],
-    image:
-      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
+    image: "https://images.pexels.com/photos/912050/pexels-photo-912050.jpeg",
   },
   {
     id: 3,
-    icon: Brush,
-    title: "Post-Construction",
+    icon: FileText,
+    title: "Passport Processing",
     description:
-      "Transform your newly built space into a pristine environment.",
+      "Professional support for passport applications, renewals and travel documentation.",
     features: [
-      "Removal of cement dust",
-      "Glass cleaning",
-      "Paint removal",
-      "Final handover",
+      "New passport applications",
+      "Passport renewal services",
+      "Visa support guidance",
+      "Travel documentation help",
     ],
-    image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
+    image: "https://images.pexels.com/photos/7235804/pexels-photo-7235804.jpeg",
   },
   {
     id: 4,
-    icon: Sparkles,
-    title: "Deep Cleaning",
+    icon: HeartPulse,
+    title: "Medical Evacuation",
     description:
-      "Intensive cleaning that reaches every corner of your property.",
+      "Emergency air ambulance services providing rapid medical evacuation and patient transport.",
     features: [
-      "Kitchen deep scrub",
-      "Bathroom scaling",
-      "Ceiling cleaning",
-      "Mattress cleaning",
+      "Emergency air ambulance",
+      "Critical patient transport",
+      "International evacuation",
+      "Rapid emergency response",
     ],
-    image:
-      "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&q=80",
+    image: "https://images.pexels.com/photos/2026324/pexels-photo-2026324.jpeg",
   },
   {
     id: 5,
-    icon: Sofa,
-    title: "Carpet & Upholstery",
+    icon: GraduationCap,
+    title: "Aviation Training",
     description:
-      "Revitalize your carpets and furniture with specialized cleaning.",
+      "Professional aviation training programs for students pursuing careers in aviation.",
     features: [
-      "Carpet shampooing",
-      "Stain removal",
-      "Sofa cleaning",
-      "Fabric protection",
+      "General aviation courses",
+      "Pilot training programs",
+      "Aircraft engineering training",
+      "Flight operations training",
     ],
     image:
-      "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=800&q=80",
+      "https://images.pexels.com/photos/46160/aircraft-jet-landing-cloud-46160.jpeg",
   },
   {
     id: 6,
-    icon: Factory,
-    title: "Industrial Cleaning",
-    description: "Heavy-duty cleaning solutions for industrial facilities.",
-    features: ["Warehouses", "Factories", "Machinery cleaning", "Degreasing"],
-    image:
-      "https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=800&q=80",
+    icon: Briefcase,
+    title: "Aviation Consultancy",
+    description:
+      "Expert aviation consultancy services for aviation businesses and investors.",
+    features: [
+      "Aviation business advisory",
+      "Flight operations planning",
+      "Regulatory compliance guidance",
+      "Aircraft acquisition consulting",
+    ],
+    image: "https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg",
   },
 ];
 
-export default function CleaningPage() {
+export default function AircraftHiringPage() {
   const [selectedService, setSelectedService] = useState<
     null | (typeof services)[0]
   >(null);
 
-  // Sync with system theme and handle modal overflow
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
+
     const applyTheme = (isDark: boolean) =>
       document.documentElement.classList.toggle("dark", isDark);
+
     applyTheme(mq.matches);
-    mq.addEventListener("change", (e) => applyTheme(e.matches));
+
+    const listener = (e: MediaQueryListEvent) => applyTheme(e.matches);
+    mq.addEventListener("change", listener);
 
     if (selectedService) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-    return () => mq.removeEventListener("change", (e) => applyTheme(e.matches));
+
+    return () => mq.removeEventListener("change", listener);
   }, [selectedService]);
 
   const scrollToContact = () => {
@@ -131,7 +137,7 @@ export default function CleaningPage() {
     <div className="min-h-screen bg-background text-foreground w-full overflow-x-hidden">
       <Navbar />
 
-      {/* --- CINEMATIC HERO --- */}
+      {/* HERO */}
       <section className="relative w-full min-h-[85vh] flex items-center pt-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -149,29 +155,33 @@ export default function CleaningPage() {
             className="max-w-4xl mx-auto text-center"
           >
             <h1 className="text-5xl sm:text-7xl font-black text-white leading-tight mb-6 uppercase italic tracking-tighter">
-              Elite <span className="text-blue-400">Cleaning</span> Solutions
+              Elite <span className="text-blue-400">Aviation</span> Services
             </h1>
+
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
-              Premium sanitization for Ugandan homes and industries. We don't
-              just clean; we restore health and clarity to your space.
+              Professional aviation solutions including aircraft charter, flight
+              booking, aviation training, medical evacuation and aviation
+              consultancy services.
             </p>
+
             <Button
               onClick={scrollToContact}
               className="bg-blue-600 hover:bg-blue-700 text-white h-16 px-12 rounded-full text-lg font-black uppercase tracking-widest shadow-2xl transition-transform active:scale-95"
             >
-              Request a Quote
+              Request Service
             </Button>
           </motion.div>
         </div>
       </section>
 
-      {/* --- SERVICES GRID (TIGHT SPACING) --- */}
+      {/* SERVICES GRID */}
       <section className="w-full py-12 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter">
-              Our Expertise
+              Our Aviation Services
             </h2>
+
             <div className="w-20 h-2 bg-blue-600 mx-auto mt-2 rounded-full"></div>
           </div>
 
@@ -188,18 +198,21 @@ export default function CleaningPage() {
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
+
+                  {/* <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-md p-3 rounded-2xl">
                     <service.icon className="w-6 h-6 text-blue-600" />
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="p-8 flex flex-col flex-grow">
                   <h3 className="text-2xl font-black mb-3 uppercase tracking-tight italic group-hover:text-blue-600 transition-colors">
                     {service.title}
                   </h3>
+
                   <p className="text-muted-foreground text-sm leading-relaxed mb-8 flex-grow">
                     {service.description}
                   </p>
+
                   <Button
                     variant="outline"
                     onClick={() => setSelectedService(service)}
@@ -214,7 +227,7 @@ export default function CleaningPage() {
         </div>
       </section>
 
-      {/* --- CONTACT & FOOTER GROUPED (ADAPTIVE DARK) --- */}
+      {/* CONTACT */}
       <div className="w-full bg-muted/30 border-t border-border mt-8">
         <div id="contact" className="py-12 px-4">
           <div className="max-w-5xl mx-auto bg-card p-8 md:p-12 rounded-[3rem] border border-border shadow-xl">
@@ -232,7 +245,7 @@ export default function CleaningPage() {
         </footer>
       </div>
 
-      {/* --- THEME-AWARE MODAL --- */}
+      {/* MODAL */}
       <AnimatePresence>
         {selectedService && (
           <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/90 backdrop-blur-md">
@@ -246,6 +259,7 @@ export default function CleaningPage() {
                 <h2 className="text-xl font-black uppercase italic tracking-tight">
                   {selectedService.title}
                 </h2>
+
                 <button
                   onClick={() => setSelectedService(null)}
                   className="p-2 bg-muted rounded-full hover:bg-red-500/10 transition-colors"
@@ -260,23 +274,27 @@ export default function CleaningPage() {
                   className="w-full h-64 object-cover"
                   alt=""
                 />
+
                 <div className="p-8">
                   <p className="text-muted-foreground mb-8 text-lg font-medium">
                     {selectedService.description}
                   </p>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
-                    {selectedService.features.map((f: string, i: number) => (
+                    {selectedService.features.map((f, i) => (
                       <div
                         key={i}
                         className="flex items-center gap-3 p-4 bg-muted/50 rounded-2xl border border-border"
                       >
                         <CheckCircle2 className="text-blue-600 w-5 h-5" />
+
                         <span className="text-sm font-bold uppercase tracking-wide">
                           {f}
                         </span>
                       </div>
                     ))}
                   </div>
+
                   <Button
                     onClick={() => {
                       setSelectedService(null);

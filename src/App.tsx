@@ -60,8 +60,8 @@ function Home() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/80 bg-clip-text text-transparent">
-              Albert International Uganda Limited
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground dark:text-white">
+              Olwit Ejang International Limited
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               A trusted professional multi-service group of companies providing
@@ -113,7 +113,7 @@ function Home() {
             <ScrollAnimation animation="fade-right">
               <div>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                  Why Choose Albert International Uganda Limited?
+                  Why Choose Olwit Ejang International Limited?
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8">
                   With years of experience and a commitment to excellence, we've
@@ -187,19 +187,19 @@ function Home() {
                               {num === 1
                                 ? "500+"
                                 : num === 2
-                                ? "98%"
-                                : num === 3
-                                ? "24/7"
-                                : "5★"}
+                                  ? "98%"
+                                  : num === 3
+                                    ? "24/7"
+                                    : "5★"}
                             </div>
                             <div className="text-xs text-muted-foreground">
                               {num === 1
                                 ? "Happy Clients"
                                 : num === 2
-                                ? "Satisfaction"
-                                : num === 3
-                                ? "Support"
-                                : "Rating"}
+                                  ? "Satisfaction"
+                                  : num === 3
+                                    ? "Support"
+                                    : "Rating"}
                             </div>
                           </div>
                         </div>
@@ -270,7 +270,7 @@ function Home() {
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
                       <p className="text-muted-foreground">
-                        info@Albert International Uganda Limited.com
+                        info@Olwit Ejang International Limited.com
                       </p>
                       <p className="text-sm text-muted-foreground">
                         We respond within 24 hours
@@ -317,7 +317,7 @@ function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Albert International Uganda Limited
+                Olwit Ejang International Limited
               </h3>
               <p className="text-sm text-muted-foreground">
                 Professional cleaning services you can trust. Making your space
@@ -394,14 +394,14 @@ function Home() {
               <h4 className="font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>(555) 123-4567</li>
-                <li>info@Albert International Uganda Limited.com</li>
+                <li>info@Olwit Ejang International Limited.com</li>
                 <li>Greater Metro Area</li>
               </ul>
             </div>
           </div>
           <div className="pt-8 border-t text-center text-sm text-muted-foreground">
             <p>
-              &copy; {new Date().getFullYear()} Albert International Uganda
+              &copy; {new Date().getFullYear()} Olwit Ejang International
               Limited. All rights reserved.
             </p>
           </div>
@@ -415,8 +415,10 @@ import CleaningPage from "./pages/Services/Cleaning";
 import WashingBayPage from "./pages/Services/WashingBay";
 import Laundry from "./pages/Services/Laundry";
 import Engineering from "./pages/Services/Engineering";
-import TradingPage from "./pages/Services/TradingPage";
-import IceCreamPage from "./pages/Services/IceCreamPage";
+import PetroleumPage from "./pages/Services/PetroleumPage";
+import AircraftHiringPage from "./pages/Services/AircraftHiringPage";
+import AutomotivePage from "./pages/Services/AutomotivePage";
+import Manufacturing from "./pages/Services/Manufacturing";
 
 export default function App() {
   return (
@@ -429,8 +431,13 @@ export default function App() {
         <Route path="/services/washing-bay" element={<WashingBayPage />} />
         <Route path="/services/laundry" element={<Laundry />} />
         <Route path="/services/engineering" element={<Engineering />} />
-        <Route path="/services/trading" element={<TradingPage />} />
-        <Route path="/services/ice-cream" element={<IceCreamPage />} />
+        <Route
+          path="/services/aircraft-hiring"
+          element={<AircraftHiringPage />}
+        />
+        <Route path="/services/automotive" element={<AutomotivePage />} />
+        <Route path="/services/petroleum" element={<PetroleumPage />} />
+        <Route path="/services/manufacturing" element={<Manufacturing />} />
       </Routes>
     </BrowserRouter>
   );
@@ -477,7 +484,7 @@ function ContactForm() {
       const body = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\n${formData.message}`;
       // Use mailto to open the user's mail client with prefilled content.
       window.location.href = `mailto:${to}?subject=${encodeURIComponent(
-        subject
+        subject,
       )}&body=${encodeURIComponent(body)}`;
       setStatus("success");
       return;

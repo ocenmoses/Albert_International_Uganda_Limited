@@ -194,7 +194,7 @@ const ConstructionPage = () => {
 
     // try to account for a fixed navbar if present
     const nav = document.querySelector<HTMLElement>(
-      "nav, .navbar, [role='navigation']"
+      "nav, .navbar, [role='navigation']",
     );
     const offset = nav ? nav.getBoundingClientRect().height : 0;
     const top = el.getBoundingClientRect().top + window.scrollY - offset - 12; // small padding
@@ -268,7 +268,7 @@ const ConstructionPage = () => {
           </motion.div>
 
           {/* SERVICES GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 -mt-8 md:-mt-12">
             {services.map((service, idx) => (
               <motion.div
                 key={idx}
@@ -277,7 +277,7 @@ const ConstructionPage = () => {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={fadeUpVariants}
-                className="bg-card/90 backdrop-blur-sm rounded-2xl border border-border overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                className="bg-card/95 dark:bg-card/80 backdrop-blur-md rounded-2xl border border-border/60 overflow-hidden hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Service Image */}
                 <div className="h-48 overflow-hidden">
@@ -290,19 +290,20 @@ const ConstructionPage = () => {
 
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-primary/10 p-3 rounded-lg">
+                    <div className="bg-primary/15 dark:bg-primary/25 p-4 rounded-xl">
                       {service.icon}
                     </div>
-                    <h3 className="text-xl font-semibold">{service.title}</h3>
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {service.title}
+                    </h3>
                   </div>
-                  <p className="text-sm text-white/80 mb-6 line-clamp-3">
+                  <p className="text-sm text-muted-foreground dark:text-muted-foreground/90 mb-6 line-clamp-3">
                     {service.short}
                   </p>
 
-                  {/* Read More Button */}
+                  {/* CHANGED: Solid blue "Read More" button */}
                   <Button
-                    variant="outline"
-                    className="w-full border-primary/30 hover:bg-primary/10"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200"
                     onClick={() => openServiceDetail(service)}
                   >
                     Read More

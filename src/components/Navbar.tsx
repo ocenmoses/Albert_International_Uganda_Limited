@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const cn = (...classes: Array<string | false | null | undefined>) =>
   classes.filter(Boolean).join(" ");
@@ -15,11 +14,25 @@ const services = [
     label: "Engineering Solutions",
     path: "/services/engineering",
   },
-  { id: "trading", label: "Trading Services", path: "/services/trading" },
   {
-    id: "ice-cream",
-    label: "Ice Cream Manufacturing",
-    path: "/services/ice-cream",
+    id: "aircraft-hiring",
+    label: "Aviation and flight services",
+    path: "/services/aircraft-hiring",
+  },
+  {
+    id: "petroleum",
+    label: "Petroleum solutions/services",
+    path: "/services/petroleum",
+  },
+  {
+    id: "automotive",
+    label: "Automotive services",
+    path: "/services/automotive",
+  },
+  {
+    id: "manufacturing",
+    label: "Manufacturing",
+    path: "/services/manufacturing",
   },
 ];
 
@@ -239,12 +252,6 @@ const Navbar = () => {
             >
               Contact
             </button>
-            <Button
-              onClick={() => scrollTo("contact")}
-              className="bg-blue-600 text-white"
-            >
-              Get Quote
-            </Button>
           </div>
 
           <button

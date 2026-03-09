@@ -123,7 +123,7 @@ function ContactForm() {
           onChange={(e) => update("name", e.target.value)}
           type="text"
           className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-          placeholder="John Doe"
+          placeholder="Your name"
           required
         />
       </div>
@@ -135,7 +135,7 @@ function ContactForm() {
           onChange={(e) => update("email", e.target.value)}
           type="email"
           className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-          placeholder="john@example.com"
+          placeholder="your.email@example.com"
           required
         />
       </div>

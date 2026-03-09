@@ -151,7 +151,10 @@ const WashingBay = () => {
             <div>
               <h2 className="text-3xl md:text-5xl font-black mb-8 leading-tight uppercase italic tracking-tighter">
                 Why Choose{" "}
-                <span className="text-primary">Albert International</span>?
+                <span className="text-primary">
+                  Olwit Ejang International Limited
+                </span>
+                ?
               </h2>
 
               <div className="space-y-4">
@@ -202,8 +205,7 @@ const WashingBay = () => {
       <footer className="py-12 border-t border-border bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-muted-foreground">
-            &copy; {new Date().getFullYear()} Albert International Uganda
-            Limited
+            &copy; {new Date().getFullYear()} Olwit Ejang International Limited
           </p>
         </div>
       </footer>
