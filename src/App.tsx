@@ -60,7 +60,7 @@ function Home() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-foreground dark:text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white">
               Olwit Ejang International Limited
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -457,11 +457,14 @@ function ContactForm() {
 
   const FORMSPREE_ENDPOINT =
     // Preferred: full endpoint
-    (import.meta.env as any).VITE_FORMSPREE_ENDPOINT ||
+    (import.meta.env as Record<string, string | undefined>)
+      .VITE_FORMSPREE_ENDPOINT ||
     // Fallback: form id
-    ((import.meta.env as any).VITE_FORMSPREE_FORM_ID
+    ((import.meta.env as Record<string, string | undefined>)
+      .VITE_FORMSPREE_FORM_ID
       ? `https://formspree.io/f/${
-          (import.meta.env as any).VITE_FORMSPREE_FORM_ID
+          (import.meta.env as Record<string, string | undefined>)
+            .VITE_FORMSPREE_FORM_ID
         }`
       : "");
 
