@@ -26,19 +26,19 @@ export default function Contact() {
               <ContactInfoItem
                 icon={<Phone className="h-6 w-6 text-blue-500" />}
                 title="Phone"
-                detail="(555) 123-4567"
+                detail="(+256) 788-310-538 / 790-955-979"
                 sub="Mon-Sun: 7AM - 9PM"
               />
               <ContactInfoItem
                 icon={<Mail className="h-6 w-6 text-blue-500" />}
                 title="Email"
-                detail="info@albertuganda.com"
+                detail="olwitejanginternationalltd@gmail.com"
                 sub="We respond within 24 hours"
               />
               <ContactInfoItem
                 icon={<MapPin className="h-6 w-6 text-blue-500" />}
                 title="Service Area"
-                detail="Greater Metro Area"
+                detail="KMB Complex-Te Atat-Lira City"
                 sub="Free estimates available"
               />
             </div>

@@ -14,6 +14,7 @@ import {
   Sparkles,
   Calendar,
   Shield,
+  CarFront,
 } from "lucide-react";
 import { CheckCircle2 } from "lucide-react";
 
@@ -29,7 +30,7 @@ const services: Service[] = [
   {
     id: 1,
     icon: Home,
-    title: "Residential Cleaning",
+    title: "Cleaning Services",
     description:
       "Regular and deep cleaning services for your home. We handle everything from daily maintenance to move-in/move-out cleaning.",
     features: [
@@ -41,36 +42,36 @@ const services: Service[] = [
   },
   {
     id: 2,
-    icon: Building2,
-    title: "Commercial Cleaning",
+    icon: CarFront,
+    title: "Washing Bay",
     description:
-      "Professional office and commercial space cleaning. Keep your workspace pristine and productive.",
+      "Washing Bay combining advanced pressure technology with meticulous hand-finishing to preserve your vehicle's value.",
     features: [
       "Daily/Weekly Service",
-      "Office Cleaning",
-      "Restroom Sanitization",
-      "Floor Care",
+      "Premium Hand Wash",
+      "Interior Detailing",
+      "Paint Protection",
     ],
   },
   {
     id: 3,
     icon: Car,
-    title: "Carpet & Upholstery",
+    title: "Laundry Services",
     description:
-      "Expert carpet cleaning and upholstery care. Restore the beauty of your furniture and flooring.",
+      "Professional Laundry Services with high-quality laundry care using modern machines and expert fabric handling.",
     features: [
       "Steam Cleaning",
       "Stain Removal",
-      "Odor Treatment",
-      "Protection Treatment",
+      "Ironing & Pressing",
+      "Fast Delivery",
     ],
   },
   {
     id: 4,
-    icon: Sparkles,
-    title: "Deep Cleaning",
+    icon: Building2,
+    title: "Engineering Services",
     description:
-      "Thorough deep cleaning service for those areas that need extra attention. Perfect for spring cleaning or special occasions.",
+      "Delivering excellence in building construction, renovation, road works, and more. Your trusted partner for professional and reliable construction services.",
     features: [
       "Kitchen Deep Clean",
       "Bathroom Sanitization",
@@ -81,34 +82,60 @@ const services: Service[] = [
   {
     id: 5,
     icon: Calendar,
-    title: "One-Time Cleaning",
+    title: "Aviation & Flight Services",
     description:
-      "Need a one-time clean? We offer flexible scheduling for special events, parties, or just when you need extra help.",
+      "Professional aviation solutions including aircraft charter, flight booking, aviation training, medical evacuation and aviation consultancy services.",
     features: [
-      "Flexible Scheduling",
-      "Event Cleaning",
-      "Post-Construction",
-      "Emergency Service",
+      "Aircraft Hiring",
+      "Flight Booking",
+      "Passport Processing",
+      "Medical Evacuation",
     ],
   },
   {
     id: 6,
     icon: Shield,
-    title: "Specialized Services",
+    title: "Petroleum Solution/Services",
     description:
-      "Specialized cleaning for unique situations. We handle challenging cleaning tasks with expertise.",
+      "Comprehensive petrol station construction, equipment supply, installation, and operational services across Uganda. From site survey to full setup, we build safe, profitable fuel stations.",
     features: [
-      "Post-Renovation",
-      "Hoarder Cleanup",
-      "Disaster Recovery",
-      "Sanitization",
+      "Petrol Station Construction",
+      "Survey & Site Assessment",
+      "Piping & Tank Installation",
+      "Service Bay & Equipment",
+    ],
+  },
+  {
+    id: 7,
+    icon: Sparkles,
+    title: "Automotive Services",
+    description:
+      "Premium vehicle import/export, sales, repairs, and refurbishment services across Uganda. Quality cars, trucks, parts, and expert craftsmanship, we keep you moving.",
+    features: [
+      "Truck & Car Sales",
+      "General Spare Parts",
+      "Car Import & Export",
+      "Panel Beating & Dent Repair",
+    ],
+  },
+  {
+    id: 8,
+    icon: Sparkles,
+    title: "Automotive Services",
+    description:
+      "Premium vehicle import/export, sales, repairs, and refurbishment services across Uganda. Quality cars, trucks, parts, and expert craftsmanship, we keep you moving.",
+    features: [
+      "Ice Cream Production",
+      "Bathing & Laundry Soap Production",
+      "Toilet Paper Manufacturing",
+      "Chalk Manufacturing",
     ],
   },
 ];
 
 const ServicesCarousel = () => {
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 1000, stopOnInteraction: true }),
   );
 
   return (
@@ -143,10 +170,7 @@ const ServicesCarousel = () => {
                   </p>
                   <ul className="space-y-2">
                     {service.features.map((feature, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-center gap-2 text-sm"
-                      >
+                      <li key={idx} className="flex items-center gap-2 text-sm">
                         <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                         <span>{feature}</span>
                       </li>

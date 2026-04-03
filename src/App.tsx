@@ -66,7 +66,7 @@ function Home() {
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
               A trusted professional multi-service group of companies providing
-              high quality, standard, fast and reliable servises
+              high quality, standard, fast and reliable services
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -255,7 +255,9 @@ function Home() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Phone</h3>
-                      <p className="text-muted-foreground">(555) 123-4567</p>
+                      <p className="text-muted-foreground">
+                        (+256) 788-310-538 / 790-955-979
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         Mon-Sun: 7AM - 9PM
                       </p>
@@ -271,7 +273,7 @@ function Home() {
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
                       <p className="text-muted-foreground">
-                        info@Olwit Ejang International Limited.com
+                        olwitejanginternationalltd@gmail.com
                       </p>
                       <p className="text-sm text-muted-foreground">
                         We respond within 24 hours
@@ -288,7 +290,7 @@ function Home() {
                     <div>
                       <h3 className="font-semibold mb-1">Service Area</h3>
                       <p className="text-muted-foreground">
-                        Greater Metro Area
+                        KMB Complex - Te Atat - Lira City
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Free estimates available
@@ -333,7 +335,7 @@ function Home() {
                     onClick={() => scrollToSection("services")}
                     className="hover:text-primary transition-colors"
                   >
-                    Residential
+                    Cleaning Services
                   </button>
                 </li>
                 <li>
@@ -341,7 +343,7 @@ function Home() {
                     onClick={() => scrollToSection("services")}
                     className="hover:text-primary transition-colors"
                   >
-                    Commercial
+                    Washing Bay
                   </button>
                 </li>
                 <li>
@@ -349,7 +351,7 @@ function Home() {
                     onClick={() => scrollToSection("services")}
                     className="hover:text-primary transition-colors"
                   >
-                    Deep Cleaning
+                    Laundry Services
                   </button>
                 </li>
                 <li>
@@ -357,7 +359,7 @@ function Home() {
                     onClick={() => scrollToSection("services")}
                     className="hover:text-primary transition-colors"
                   >
-                    Specialized
+                    Engineering Services
                   </button>
                 </li>
               </ul>
@@ -394,9 +396,9 @@ function Home() {
             <div>
               <h4 className="font-semibold mb-4">Contact</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>(555) 123-4567</li>
-                <li>info@Olwit Ejang International Limited.com</li>
-                <li>Greater Metro Area</li>
+                <li>(+256) 788-310-538 / 790-955-979</li>
+                <li>olwitejanginternationalltd@gmail.com</li>
+                <li>KMB Complex-Te Atat-Lira City</li>
               </ul>
             </div>
           </div>
@@ -566,7 +568,7 @@ function ContactForm() {
           type="tel"
           id="phone"
           className="w-full px-4 py-2 rounded-md border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          placeholder="(555) 123-4567"
+          placeholder="(+256) 123-4567"
         />
       </div>
 
